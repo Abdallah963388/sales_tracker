@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sales_tracker/core/responsive/responsive_config.dart';
 import 'package:sales_tracker/core/routing/app_routes.dart';
-import 'package:sales_tracker/core/shared_widgets/custom_app_bar.dart';
+// import 'package:sales_tracker/core/shared_widgets/custom_app_bar.dart';
 import 'package:sales_tracker/core/theme/app_colors.dart';
 import 'package:sales_tracker/core/theme/app_text_style.dart';
 import 'package:sales_tracker/features/clients/data/model/client_model.dart';
@@ -118,184 +118,233 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'الصفحة الرئيسية',
-      ),
+      // appBar: CustomAppBar(
+      // toolbarHeight: 30.h,
+      // title: 'الصفحة الرئيسية',
+      // ),
       body: Padding(
-        padding: EdgeInsets.all(8.r),
-        child: Column(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6.w),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      width: 60.w,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.blackColor.withAlpha(100),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'عدد العملاء',
-                            style: AppTextStyle.style14W500.copyWith(
-                              color: AppColors.blackColor.withAlpha(150),
-                            ),
-                          ),
-                          Text(clients.length.toString()),
-                        ],
-                      ),
-                    ),
-                  ),
-                  6.horizontalSpace,
-                  Expanded(
-                    child: Container(
-                      width: 60.w,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.blackColor.withAlpha(100),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'عدد الزيارات',
-                            style: AppTextStyle.style14W500.copyWith(
-                              color: AppColors.blackColor.withAlpha(150),
-                            ),
-                          ),
-                          Text(visits.length.toString()),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+            16.verticalSpace,
+            Text(
+              'الإحصائيات',
+              style: AppTextStyle.style16W800.copyWith(
+                color: AppColors.primaryDarkColor,
               ),
             ),
-            8.verticalSpace,
+            10.verticalSpace,
+            Row(
+              children: [
+                SatisWidget(
+                  list: clients,
+                  title: 'عدد الزيارات',
+                ),
+                12.horizontalSpace,
+                SatisWidget(
+                  list: clients,
+                  title: 'عدد العملاء',
+                ),
+              ],
+            ),
+            16.verticalSpace,
+            Text(
+              'الإجراءات',
+              style: AppTextStyle.style16W800.copyWith(
+                color: AppColors.primaryDarkColor,
+              ),
+            ),
+            10.verticalSpace,
             Row(
               children: [
                 CustomWidget(
                   onTap: () => context.pushNamed(AppRoutes.addClientsScreen),
                   text: 'إضافة عملاء',
                 ),
-                8.horizontalSpace,
+                12.horizontalSpace,
                 CustomWidget(
                   onTap: () => context.pushNamed(AppRoutes.addVisitsScreen),
                   text: 'إضافة زيارات',
                 ),
               ],
             ),
-            // 8.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'العملاء',
-                    style: AppTextStyle.style14W900.copyWith(
+            16.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'العملاء',
+                  style: AppTextStyle.style16W800.copyWith(
+                    color: AppColors.primaryDarkColor,
+                  ),
+                ),
+                InkWell(
+                  child: Text(
+                    'عرض الكل',
+                    style: AppTextStyle.style9W600.copyWith(
                       color: AppColors.blackColor.withAlpha(150),
                     ),
                   ),
-                  TextButton(
-                    child: Text(
-                      'عرض الكل',
-                      style: AppTextStyle.style14W500.copyWith(
-                        color: AppColors.blackColor.withAlpha(150),
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutes.clientsScreen,
+                      extra: clients,
+                    );
+                  },
+                ),
+              ],
+            ),
+            10.verticalSpace,
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: topThreeClients.length,
+              itemBuilder: (context, index) {
+                final client = topThreeClients[index];
+                return InkWell(
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutes.clientsDetailsScreen,
+                      extra: client,
+                    );
+                  },
+                  child: Card(
+                    color: AppColors.whiteColor,
+                    child: ListTile(
+                      title: Text(
+                        client.name,
+                        style: AppTextStyle.style14W800.copyWith(
+                          color: AppColors.primaryDarkColor,
+                        ),
+                      ),
+                      subtitle: Text(
+                        client.phone,
+                        style: AppTextStyle.style12W800.copyWith(
+                          color: AppColors.primaryDarkColor,
+                        ),
                       ),
                     ),
-                    onPressed: () {
-                      context.pushNamed(
-                        AppRoutes.clientsScreen,
-                        extra: clients,
-                      );
-                    },
                   ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: topThreeClients.length,
-                itemBuilder: (context, index) {
-                  final client = topThreeClients[index];
-                  return InkWell(
-                    onTap: () {
-                      context.pushNamed(
-                        AppRoutes.clientsDetailsScreen,
-                        extra: client,
-                      );
-                    },
-                    child: ListTile(
-                      title: Text(client.name),
-                      subtitle: Text(client.phone),
-                    ),
-                  );
-                },
-              ),
+                );
+              },
             ),
 
-            // 8.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'الزيارات',
-                    style: AppTextStyle.style14W900.copyWith(
+            16.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'الزيارات',
+                  style: AppTextStyle.style16W800.copyWith(
+                    color: AppColors.primaryDarkColor,
+                  ),
+                ),
+                InkWell(
+                  child: Text(
+                    'عرض الكل',
+                    style: AppTextStyle.style9W600.copyWith(
                       color: AppColors.blackColor.withAlpha(150),
                     ),
                   ),
-                  TextButton(
-                    child: Text(
-                      'عرض الكل',
-                      style: AppTextStyle.style14W500.copyWith(
-                        color: AppColors.blackColor.withAlpha(150),
+                  onTap: () {
+                    context.pushNamed(AppRoutes.visitsScreen, extra: visits);
+                  },
+                ),
+              ],
+            ),
+            10.verticalSpace,
+
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: topThreeVisits.length,
+              itemBuilder: (context, index) {
+                final visit = topThreeVisits[index];
+                return InkWell(
+                  onTap: () {
+                    context.pushNamed(
+                      AppRoutes.visitsDetailsScreen,
+                      extra: visit,
+                    );
+                  },
+                  child: Card(
+                    color: AppColors.whiteColor,
+                    child: ListTile(
+                      title: Text(
+                        visit.name,
+                        style: AppTextStyle.style14W800.copyWith(
+                          color: AppColors.primaryDarkColor,
+                        ),
+                      ),
+                      subtitle: Text(
+                        visit.visitDetails ?? '',
+                        style: AppTextStyle.style12W800.copyWith(
+                          color: AppColors.primaryDarkColor,
+                        ),
                       ),
                     ),
-                    onPressed: () {
-                      context.pushNamed(AppRoutes.visitsScreen, extra: visits);
-                    },
                   ),
-                ],
-              ),
+                );
+              },
             ),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: topThreeVisits.length,
-                itemBuilder: (context, index) {
-                  final visit = topThreeVisits[index];
-                  return InkWell(
-                    onTap: () {
-                      context.pushNamed(
-                        AppRoutes.visitsDetailsScreen,
-                        extra: visit,
-                      );
-                    },
-                    child: ListTile(
-                      title: Text(visit.name),
-                      subtitle: Text(visit.visitDetails ?? ''),
-                    ),
-                  );
-                },
-              ),
-            ),
+            16.verticalSpace,
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class SatisWidget extends StatelessWidget {
+  const SatisWidget({
+    required this.title,
+    required this.list,
+    super.key,
+    this.onTap,
+  });
+
+  final List<dynamic> list;
+  final String title;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(20.r),
+          width: 60.w,
+          height: 140.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20.r),
+            color: AppColors.primaryColor.withAlpha(25),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.view_compact_rounded,
+                color: AppColors.primaryDarkColor.withAlpha(150),
+                size: 40.r,
+              ),
+              const Spacer(),
+              Text(
+                title,
+                style: AppTextStyle.style12W800.copyWith(
+                  color: AppColors.primaryDarkColor.withAlpha(150),
+                ),
+              ),
+              Text(
+                list.length.toString(),
+                style: AppTextStyle.style18Bold.copyWith(
+                  color: AppColors.primaryDarkColor,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

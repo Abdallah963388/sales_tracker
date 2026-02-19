@@ -94,7 +94,7 @@ class AppErrorInterceptor extends Interceptor {
     if (err.response?.statusCode == 401) {
       if (context != null) {
         CacheHelper.removeSecured(CacheKeys.userToken);
-        GoRouter.of(context).goNamed(AppRoutes.onBoardingScreen);
+        GoRouter.of(context).goNamed(AppRoutes.loginScreen);
       }
     } else if (err.response?.statusCode == 503 ||
         err.type == DioExceptionType.unknown ||

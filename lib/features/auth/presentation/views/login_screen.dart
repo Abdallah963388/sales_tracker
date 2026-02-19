@@ -159,8 +159,8 @@ class _LogInScreenState extends State<LogInScreen> {
                         CustomPrimaryButton(
                           width: double.infinity,
                           onPressed: () {
-                            context.pushNamed(
-                              AppRoutes.adminHomeScreen,
+                            context.pushReplacementNamed(
+                              AppRoutes.mainLayoutScreen,
                             ); //homeScreen for representative
                             // if (formKey.currentState!.validate()) {
                             //   context.read<AuthBloc>().add(

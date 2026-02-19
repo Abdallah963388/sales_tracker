@@ -18,6 +18,11 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
   void setTabs(List<TabItemModel> tabs) {
     emit(state.copyWith(tabs: tabs));
   }
+  int backPressCount = 0;
+
+  void resetBackPress() {
+    backPressCount = 0;
+  }
 
   Future<void> goToPage(int index, PageController? controller) async {
     if (index == state.currentIndex) return;

@@ -11,40 +11,41 @@ class CustomWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: SizedBox(
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryColor.withAlpha(30),
+              blurRadius: 10,
+              spreadRadius: 1,
+              offset: const Offset(0, 6),
+            ),
+          ],
+
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(24.r),
+        ),
         width: double.infinity,
-        height: 200.h,
+        height: 150.h,
         child: InkWell(
           onTap: onTap,
-          child: Card(
-            color: AppColors.whiteColor,
-            // width: 100.w,
-            // height: 100.h,
-            // decoration: BoxDecoration(
-            //   color: AppColors.whiteColor,
-            //   borderRadius: BorderRadius.circular(16),
-            //   border: Border.all(
-            //     color: AppColors.primaryColor,
-            //   ),
-            // ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.add,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add,
+                size: 40.r,
+                color: AppColors.whiteColor,
+              ),
+              12.verticalSpace,
+              Text(
+                text,
+                style: AppTextStyle.style14W800.copyWith(
+                  color: AppColors.whiteColor,
                 ),
-                12.verticalSpace,
-                Text(
-                  text,
-                  style: AppTextStyle.style14W900.copyWith(
-                    color: AppColors.blackColor.withAlpha(
-                      150,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

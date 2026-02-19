@@ -31,7 +31,7 @@ class _SplashViewState extends State<SplashView> {
     if (!mounted) return;
     final hasSeenOnboarding = CacheHelper.get<bool>(CacheKeys.isFirstOpen);
     if (hasSeenOnboarding == null) {
-      context.go(AppRoutes.onBoardingScreen);
+      context.go(AppRoutes.mainLayoutScreen);
     } else {
       context.go(AppRoutes.loginScreen);
     }

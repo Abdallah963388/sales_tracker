@@ -3,13 +3,12 @@ import 'package:sales_tracker/core/responsive/responsive_config.dart';
 import 'package:sales_tracker/core/theme/app_colors.dart';
 import 'package:sales_tracker/core/theme/app_text_style.dart';
 
-
 class CustomDropdownField<T> extends StatelessWidget {
   const CustomDropdownField({
+    required this.items,
     super.key,
     this.label,
     this.hint,
-    required this.items,
     this.value,
     this.initialValue,
     this.onChanged,

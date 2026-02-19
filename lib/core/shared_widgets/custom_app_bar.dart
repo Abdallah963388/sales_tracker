@@ -3,12 +3,11 @@ import 'package:sales_tracker/core/responsive/responsive_config.dart';
 import 'package:sales_tracker/core/theme/app_colors.dart';
 import 'package:sales_tracker/core/theme/app_text_style.dart';
 
-
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,
     this.title = '',
-    this.canBack = true,
+    this.canBack = false,
     this.actions,
     this.bottom,
     this.toolbarHeight,

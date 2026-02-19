@@ -23,8 +23,8 @@ import '../../features/auth/presentation/views/login_screen.dart';
 import '../../features/auth/presentation/views/register_screen.dart';
 import '../../features/auth/presentation/views/reset_password_screen.dart';
 import '../../features/auth/presentation/views/verification_screen.dart';
-import '../../features/intro/onboarding/cubit/onboarding_cubit.dart';
-import '../../features/intro/onboarding/onboarding_screen.dart';
+// import '../../features/intro/onboarding/cubit/onboarding_cubit.dart';
+// import '../../features/intro/onboarding/onboarding_screen.dart';
 import '../../features/intro/splash/splash_view.dart';
 import '../../features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
 import '../../features/main_layout/presentation/views/main_layout_view.dart';
@@ -155,14 +155,14 @@ class RouterGenerationConfig {
         },
       ),
 
-      GoRoute(
-        path: AppRoutes.onBoardingScreen,
-        name: AppRoutes.onBoardingScreen,
-        builder: (context, state) => BlocProvider<OnboardingCubit>(
-          create: (context) => getIt<OnboardingCubit>(),
-          child: const OnBoardingScreen(),
-        ),
-      ),
+      // GoRoute(
+      //   path: AppRoutes.onBoardingScreen,
+      //   name: AppRoutes.onBoardingScreen,
+      //   builder: (context, state) => BlocProvider<OnboardingCubit>(
+      //     create: (context) => getIt<OnboardingCubit>(),
+      //     child: const OnBoardingScreen(),
+      //   ),
+      // ),
 
       /// ------------------ < Main Layout Route > ------------------
       GoRoute(
