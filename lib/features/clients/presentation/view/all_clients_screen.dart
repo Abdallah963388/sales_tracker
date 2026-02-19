@@ -4,8 +4,8 @@ import 'package:sales_tracker/core/routing/app_routes.dart';
 import 'package:sales_tracker/core/shared_widgets/custom_app_bar.dart';
 import 'package:sales_tracker/features/clients/data/model/client_model.dart';
 
-class ClientsScreen extends StatefulWidget {
-  const ClientsScreen({
+class AllClientsScreen extends StatefulWidget {
+  const AllClientsScreen({
     required this.clients,
     super.key,
   });
@@ -13,16 +13,16 @@ class ClientsScreen extends StatefulWidget {
   final List<ClientModel> clients;
 
   @override
-  State<ClientsScreen> createState() => _ClientsScreenState();
+  State<AllClientsScreen> createState() => _AllClientsScreenState();
 }
 
-class _ClientsScreenState extends State<ClientsScreen> {
+class _AllClientsScreenState extends State<AllClientsScreen> {
   final bool isAdmin = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'العملاء'),
+      appBar: const CustomAppBar(title: 'جميع العملاء'),
       body: ListView.builder(
         itemCount: widget.clients.length,
         itemBuilder: (context, index) {

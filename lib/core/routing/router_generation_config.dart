@@ -1,11 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_tracker/features/admin_home/presentation/view/admin_home_screen.dart';
 import 'package:sales_tracker/features/clients/data/model/client_model.dart';
 import 'package:sales_tracker/features/clients/presentation/controller/client_cubit.dart';
 import 'package:sales_tracker/features/clients/presentation/view/add_clients_screen.dart';
 import 'package:sales_tracker/features/clients/presentation/view/clients_details_screen.dart';
 import 'package:sales_tracker/features/clients/presentation/view/clients_screen.dart';
 import 'package:sales_tracker/features/home/presentation/view/home_screen.dart';
+import 'package:sales_tracker/features/representatives/presentation/view/representative_management_screen.dart';
+import 'package:sales_tracker/features/representatives/presentation/view/representatives_details_screen.dart';
+import 'package:sales_tracker/features/representatives/presentation/view/representatives_screen.dart';
 import 'package:sales_tracker/features/visits/presentation/view/add_visits_screen.dart';
 import 'package:sales_tracker/features/visits/presentation/view/visit_screen.dart';
 import 'package:sales_tracker/features/visits/presentation/view/visits_details_screen.dart';
@@ -47,6 +51,15 @@ class RouterGenerationConfig {
       ),
 
       GoRoute(
+        path: AppRoutes.adminHomeScreen,
+        name: AppRoutes.adminHomeScreen,
+        builder: (context, state) => BlocProvider<ClientCubit>(
+          create: (context) => getIt<ClientCubit>(),
+          child: AdminHomeScreen(),
+        ),
+      ),
+
+      GoRoute(
         path: AppRoutes.clientsScreen,
         name: AppRoutes.clientsScreen,
         builder: (context, state) {
@@ -69,6 +82,18 @@ class RouterGenerationConfig {
           );
           final visits = state.extra! as List<ClientModel>;
           return VisitScreen(visits: visits);
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.representativeScreen,
+        name: AppRoutes.representativeScreen,
+        builder: (context, state) {
+          BlocProvider<ClientCubit>(
+            create: (context) => getIt<ClientCubit>()..getClients(),
+          );
+          final representatives = state.extra! as List<ClientModel>;
+          return RepresentativesScreen(representatives: representatives);
         },
       ),
 
@@ -109,6 +134,24 @@ class RouterGenerationConfig {
         builder: (context, state) {
           final visit = state.extra! as ClientModel;
           return VisitsDetailsScreen(visit: visit);
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.representativeDetailsScreen,
+        name: AppRoutes.representativeDetailsScreen,
+        builder: (context, state) {
+          final representative = state.extra! as ClientModel;
+          return RepresentativesDetailsScreen(representative: representative);
+        },
+      ),
+
+      GoRoute(
+        path: AppRoutes.representativeManagementScreen,
+        name: AppRoutes.representativeManagementScreen,
+        builder: (context, state) {
+          final representative = state.extra as ClientModel?;
+          return RepresentativeManagementScreen(representative: representative);
         },
       ),
 

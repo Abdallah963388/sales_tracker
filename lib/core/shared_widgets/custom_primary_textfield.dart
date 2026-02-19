@@ -27,6 +27,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
     this.inputFormatters,
     this.enabled = true,
     this.maxLines = 1,
+    this.title,
   });
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -47,56 +48,72 @@ class CustomPrimaryTextfield extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool? enabled;
   final int? maxLines;
+  final String? title;
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // height: 52.h,
-      child: TextFormField(
-        maxLines: maxLines,
-        enabled: enabled,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        autofocus: autofocus,
-        onChanged: onChanged,
-        onTap: onTap,
-        readOnly: readOnly ?? false,
-        style:
-            style ??
-            AppTextStyle.style14W500.copyWith(color: AppColors.thirdColor),
-
-        textAlign: textAlign ?? TextAlign.start,
-        validator: validator,
-        focusNode: focusNode,
-        controller: controller,
-        cursorWidth: 0.5,
-        cursorColor: AppColors.primaryColor,
-        obscureText: isPassword ?? false,
-        decoration: InputDecoration(
-          hint: Text(
-            text ?? '',
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          child: Text(
+            title ?? '',
+            style: AppTextStyle.style14W500.copyWith(
+              color: AppColors.blackColor.withAlpha(150),
+            ),
+          ),
+        ),
+        5.verticalSpace,
+        SizedBox(
+          // height: 52.h,
+          child: TextFormField(
+            maxLines: maxLines,
+            enabled: enabled,
+            keyboardType: keyboardType,
+            inputFormatters: inputFormatters,
+            autofocus: autofocus,
+            onChanged: onChanged,
+            onTap: onTap,
+            readOnly: readOnly ?? false,
             style:
                 style ??
-                AppTextStyle.style14W500.copyWith(
-                  color: AppColors.blackColor.withAlpha(150),
-                ),
-          ),
-          border: customOutlineInputBorder(),
-          focusedBorder: customOutlineInputBorder(),
-          enabledBorder: customOutlineInputBorder(),
-          disabledBorder: customOutlineInputBorder(),
-          suffixIcon: suffix,
-          prefixIcon: prefix,
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 12.w,
-            vertical: 10.h,
-          ),
-          filled: true,
-          fillColor: AppColors.scaffoldBackgroundLightColor,
-        ),
+                AppTextStyle.style14W500.copyWith(color: AppColors.thirdColor),
 
-        textInputAction: textInputAction,
-        autofillHints: autofillHints,
-      ),
+            textAlign: textAlign ?? TextAlign.start,
+            validator: validator,
+            focusNode: focusNode,
+            controller: controller,
+            cursorWidth: 0.5,
+            cursorColor: AppColors.primaryColor,
+            obscureText: isPassword ?? false,
+            decoration: InputDecoration(
+              hint: Text(
+                text ?? '',
+                style:
+                    style ??
+                    AppTextStyle.style14W500.copyWith(
+                      color: AppColors.blackColor.withAlpha(150),
+                    ),
+              ),
+              border: customOutlineInputBorder(),
+              focusedBorder: customOutlineInputBorder(),
+              enabledBorder: customOutlineInputBorder(),
+              disabledBorder: customOutlineInputBorder(),
+              suffixIcon: suffix,
+              prefixIcon: prefix,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 12.w,
+                vertical: 10.h,
+              ),
+              filled: true,
+              fillColor: AppColors.scaffoldBackgroundLightColor,
+            ),
+
+            textInputAction: textInputAction,
+            autofillHints: autofillHints,
+          ),
+        ),
+      ],
     );
   }
 }

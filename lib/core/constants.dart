@@ -6,6 +6,6 @@ import './cache_helper/cache_helper.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 
 final double radius = 30.r;
-const kPrimaryEnFont = 'Cairo';
-const kPrimaryArFont = 'Cairo';
+const kPrimaryEnFont = 'Almarai';
+const kPrimaryArFont = 'Almarai';
 final bool latinLang = (CacheHelper.getLanguage() == 'en');

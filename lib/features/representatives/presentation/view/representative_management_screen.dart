@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
 import 'package:sales_tracker/core/responsive/responsive_config.dart';
@@ -11,17 +10,19 @@ import 'package:sales_tracker/core/shared_widgets/custom_primary_textfield.dart'
 import 'package:sales_tracker/core/theme/app_colors.dart';
 import 'package:sales_tracker/core/theme/app_text_style.dart';
 import 'package:sales_tracker/features/clients/data/model/client_model.dart';
-import 'package:sales_tracker/features/clients/presentation/controller/client_cubit.dart';
 
 // ignore: must_be_immutable
-class AddClientsScreen extends StatefulWidget {
-  const AddClientsScreen({super.key});
+class RepresentativeManagementScreen extends StatefulWidget {
+  const RepresentativeManagementScreen({this.representative, super.key});
+  final ClientModel? representative;
 
   @override
-  State<AddClientsScreen> createState() => _AddClientsScreenState();
+  State<RepresentativeManagementScreen> createState() =>
+      _RepresentativeManagementScreenState();
 }
 
-class _AddClientsScreenState extends State<AddClientsScreen> {
+class _RepresentativeManagementScreenState
+    extends State<RepresentativeManagementScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController placeController = TextEditingController();
@@ -33,6 +34,7 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
 
   bool isVisible = true;
   String? locationText;
+  bool get isEdit => widget.representative != null;
 
   Future<void> _confirmAndGetLocation() async {
     final confirm = await showDialog<bool>(
@@ -96,9 +98,42 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    if (isEdit) {
+      final rep = widget.representative!;
+
+      nameController.text = rep.name;
+      placeController.text = rep.placeName;
+      areaController.text = rep.area;
+      emailController.text = rep.email;
+      phoneController.text = rep.phone;
+      detailsController.text = rep.details;
+      visitDetailsController.text = rep.visitDetails ?? '';
+      locationText = rep.location;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'إضافة عميل'),
+      appBar: CustomAppBar(
+        title: isEdit ? 'تعديل المندوب' : 'إضافة مندوب',
+        actions: [
+          if (isEdit)
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                size: 24.r,
+                color: AppColors.errorColor,
+              ),
+              onPressed: () {},
+            )
+          else
+            const SizedBox.shrink(),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(8.r),
         child: Column(
@@ -106,30 +141,36 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
           children: [
             12.verticalSpace,
             CustomPrimaryTextfield(
-              text: 'الاسم',
+              title: 'الاسم',
+              controller: nameController,
               validator: (v) => v!.isEmpty ? 'ادخل الاسم' : null,
             ),
             12.verticalSpace,
-            const CustomPrimaryTextfield(
-              text: 'اسم المكان',
-            ),
-            12.verticalSpace,
-            const CustomPrimaryTextfield(
-              text: 'المنطقة',
+            CustomPrimaryTextfield(
+              title: 'اسم المكان',
+              controller: placeController,
             ),
             12.verticalSpace,
             CustomPrimaryTextfield(
-              text: 'ايميل التواصل',
+              title: 'المنطقة',
+              controller: areaController,
+            ),
+            12.verticalSpace,
+            CustomPrimaryTextfield(
+              title: 'البريد الإلكتروني',
+              controller: emailController,
               validator: (v) => v!.isEmpty ? 'ادخل ايميل التواصل' : null,
             ),
             12.verticalSpace,
             CustomPrimaryTextfield(
-              text: 'رقم الجوال',
+              title: 'رقم الجوال',
+              controller: phoneController,
               validator: (v) => v!.isEmpty ? 'ادخل رقم الجوال' : null,
             ),
             12.verticalSpace,
-            const CustomPrimaryTextfield(
-              text: 'تفاصيل عن البيزنس',
+            CustomPrimaryTextfield(
+              title: 'تفاصيل عن البيزنس',
+              controller: detailsController,
               maxLines: 3,
             ),
             12.verticalSpace,
@@ -172,7 +213,9 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
               height: 20.h,
               onPressed: () async {
                 final newClient = ClientModel(
-                  id: DateTime.now().millisecondsSinceEpoch,
+                  id: isEdit
+                      ? widget.representative!.id
+                      : DateTime.now().millisecondsSinceEpoch,
                   name: nameController.text,
                   placeName: placeController.text,
                   area: areaController.text,
@@ -184,7 +227,11 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                 );
 
                 // لو عندك Cubit تقدر تنادي addClient زي ما عندك
-                await context.read<ClientCubit>().addClient(newClient);
+                // if (isEdit) {
+                //   await context.read<ClientCubit>().updateClient(newClient);
+                // } else {
+                //   await context.read<ClientCubit>().addClient(newClient);
+                // }
 
                 // ارجع العميل الجديد للصفحة السابقة
                 context.pop(newClient);

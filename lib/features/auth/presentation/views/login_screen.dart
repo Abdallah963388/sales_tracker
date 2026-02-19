@@ -79,14 +79,14 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       30.verticalSpace,
 
-                      Text(
-                        'Email', // Removed .tr(context)
-                        style: AppTextStyle.style16W500,
-                      ),
-                      5.verticalSpace,
+                      // Text(
+                      //   'Email', // Removed .tr(context)
+                      //   style: AppTextStyle.style16W500,
+                      // ),
+                      // 5.verticalSpace,
                       CustomPrimaryTextfield(
                         controller: emailController,
-                        text: 'Enter your email', // Removed .tr(context)
+                        title: 'Enter your email', // Removed .tr(context)
                         textInputAction: TextInputAction.next,
                         autofillHints: const [AutofillHints.email],
                         validator: (value) {
@@ -98,11 +98,11 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       15.verticalSpace,
 
-                      Text(
-                        'Password', // Removed .tr(context)
-                        style: AppTextStyle.style16W500,
-                      ),
-                      5.verticalSpace,
+                      // Text(
+                      //   'Password', // Removed .tr(context)
+                      //   style: AppTextStyle.style16W500,
+                      // ),
+                      // 5.verticalSpace,
                       CustomPrimaryTextfield(
                         controller: passwordController,
                         isPassword: isPasswordHidden,
@@ -121,7 +121,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             color: AppColors.secondaryColor,
                           ),
                         ),
-                        text: 'Enter your password',
+                        title: 'Enter your password',
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Password is required';
@@ -159,7 +159,9 @@ class _LogInScreenState extends State<LogInScreen> {
                         CustomPrimaryButton(
                           width: double.infinity,
                           onPressed: () {
-                            context.pushNamed(AppRoutes.homeScreen);
+                            context.pushNamed(
+                              AppRoutes.adminHomeScreen,
+                            ); //homeScreen for representative
                             // if (formKey.currentState!.validate()) {
                             //   context.read<AuthBloc>().add(
                             //     LoginReqEvent(
