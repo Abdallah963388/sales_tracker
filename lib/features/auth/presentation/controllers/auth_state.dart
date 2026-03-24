@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_positional_boolean_parameters
 
-part of 'auth_bloc.dart';
+part of 'auth_cubit.dart';
 
 abstract class AuthState {}
 
@@ -76,8 +76,8 @@ class LogoutFailedState extends AuthState {
 }
 
 // UI States
-class PasswordVisibilityChangedState extends AuthState {
-  PasswordVisibilityChangedState(this.isPasswordHidden);
+class PasswordVisibilityChangedStates extends AuthState {
+  PasswordVisibilityChangedStates(this.isPasswordHidden);
   final bool isPasswordHidden;
 }
 
@@ -102,3 +102,5 @@ class CountdownRunning extends AuthState {
 }
 
 class CountdownFinished extends AuthState {}
+
+class PasswordVisibilityChangedState extends AuthState {}

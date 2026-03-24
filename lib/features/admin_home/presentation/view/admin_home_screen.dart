@@ -1,387 +1,314 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sales_tracker/core/responsive/responsive_config.dart';
 import 'package:sales_tracker/core/routing/app_routes.dart';
-import 'package:sales_tracker/core/shared_widgets/custom_app_bar.dart';
+import 'package:sales_tracker/core/services/date_format.dart';
+import 'package:sales_tracker/core/shared_widgets/custom_progress_indicator.dart';
 import 'package:sales_tracker/core/theme/app_colors.dart';
 import 'package:sales_tracker/core/theme/app_text_style.dart';
-import 'package:sales_tracker/features/clients/data/model/client_model.dart';
+import 'package:sales_tracker/features/admin_home/presentation/controller/admin_home_cubit.dart';
+import 'package:sales_tracker/features/admin_home/presentation/controller/admin_home_states.dart';
+import 'package:sales_tracker/features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
 
 class AdminHomeScreen extends StatelessWidget {
-  AdminHomeScreen({super.key});
-
-  final List<ClientModel> clients = [
-    ClientModel(
-      id: 1,
-      name: 'Ahmad Ali',
-      placeName: 'Shop 1',
-      area: 'Cairo',
-      email: 'ahmad@example.com',
-      phone: '01012345678',
-      details: 'Electronics shop',
-    ),
-    ClientModel(
-      id: 2,
-      name: 'Sara Mohamed',
-      placeName: 'Shop 2',
-      area: 'Giza',
-      email: 'sara@example.com',
-      phone: '01087654321',
-      details: 'Clothes store',
-    ),
-    ClientModel(
-      id: 3,
-      name: 'Ali Hassan',
-      placeName: 'Shop 3',
-      area: 'Alexandria',
-      email: 'ali@example.com',
-      phone: '01011223344',
-      details: 'Bookstore',
-    ),
-    ClientModel(
-      id: 4,
-      name: 'Abdallah Jamal',
-      placeName: 'Shop 4',
-      area: 'Mynia',
-      email: 'abdallah@example.com',
-      phone: '01011223344',
-      details: 'Mobile store',
-    ),
-    ClientModel(
-      id: 5,
-      name: 'Ahmed Mahmoud',
-      placeName: 'Shop 5',
-      area: 'Aswan',
-      email: 'a@example.com',
-      phone: '01011223344',
-      details: 'Shoes store',
-    ),
-  ];
-
-  final List<ClientModel> visits = [
-    ClientModel(
-      id: 1,
-      name: 'Visit 1',
-      placeName: 'Shop 1',
-      area: 'Cairo',
-      email: '',
-      phone: '',
-      details: '',
-      visitDetails: 'Discussed new products',
-    ),
-    ClientModel(
-      id: 2,
-      name: 'Visit 2',
-      placeName: 'Shop 2',
-      area: 'Giza',
-      email: '',
-      phone: '',
-      details: '',
-      visitDetails: 'Check stock',
-    ),
-    ClientModel(
-      id: 3,
-      name: 'Visit 3',
-      placeName: 'Shop 3',
-      area: 'Alexandria',
-      email: '',
-      phone: '',
-      details: '',
-      visitDetails: 'Follow up on order',
-    ),
-    ClientModel(
-      id: 4,
-      name: 'Visit 4',
-      placeName: 'Shop 4',
-      area: 'Tanta',
-      email: '',
-      phone: '',
-      details: '',
-      visitDetails: 'Product demonstration',
-    ),
-    ClientModel(
-      id: 5,
-      name: 'Visit 5',
-      placeName: 'Shop 5',
-      area: 'Mansoura',
-      email: '',
-      phone: '',
-      details: '',
-      visitDetails: 'Discuss pricing',
-    ),
-  ];
-
-  final List<ClientModel> representatives = [
-    ClientModel(
-      id: 1,
-      name: 'Amir Ali',
-      placeName: 'Shop 1',
-      area: 'Cairo',
-      email: 'ahmad@example.com',
-      phone: '01012345678',
-      details: 'Electronics shop',
-    ),
-    ClientModel(
-      id: 2,
-      name: 'Sara Mohamed',
-      placeName: 'Shop 2',
-      area: 'Giza',
-      email: 'sara@example.com',
-      phone: '01087654321',
-      details: 'Clothes store',
-    ),
-    ClientModel(
-      id: 3,
-      name: 'Ali Hassan',
-      placeName: 'Shop 3',
-      area: 'Alexandria',
-      email: 'ali@example.com',
-      phone: '01011223344',
-      details: 'Bookstore',
-    ),
-    ClientModel(
-      id: 4,
-      name: 'Abdallah Jamal',
-      placeName: 'Shop 4',
-      area: 'Mynia',
-      email: 'abdallah@example.com',
-      phone: '01011223344',
-      details: 'Mobile store',
-    ),
-    ClientModel(
-      id: 5,
-      name: 'Ahmed Mahmoud',
-      placeName: 'Shop 5',
-      area: 'Aswan',
-      email: 'a@example.com',
-      phone: '01011223344',
-      details: 'Shoes store',
-    ),
-  ];
-  List<ClientModel> get topThreeRepresentative =>
-      representatives.take(3).toList();
-  List<ClientModel> get topThreeClients => clients.take(3).toList();
+  const AdminHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(
-        title: 'الصفحة الرئيسية',
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(8.r),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6.w),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      width: 60.w,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.blackColor.withAlpha(100),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'عدد العملاء',
-                            style: AppTextStyle.style14W500.copyWith(
-                              color: AppColors.blackColor.withAlpha(150),
-                            ),
-                          ),
-                          Text(clients.length.toString()),
-                        ],
-                      ),
-                    ),
-                  ),
-                  6.horizontalSpace,
-                  Expanded(
-                    child: Container(
-                      width: 60.w,
-                      height: 60.h,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: AppColors.blackColor.withAlpha(100),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'عدد الزيارات',
-                            style: AppTextStyle.style14W500.copyWith(
-                              color: AppColors.blackColor.withAlpha(150),
-                            ),
-                          ),
-                          Text(visits.length.toString()),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            16.verticalSpace,
+    final locale = Localizations.localeOf(context).toString();
 
-            // 8.verticalSpace,
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return BlocBuilder<AdminHomeCubit, AdminHomeStates>(
+      builder: (context, state) {
+        if (state is AdminHomeLoading) {
+          return const Center(child: LoadingWidget());
+        }
+        if (state is AdminHomeFailed) {
+          return Center(child: Text('Error: ${state.error}'));
+        }
+        if (state is AdminHomeSuccess) {
+          final stats = state.dashboard.data?.stats;
+          final clients = state.dashboard.data?.recentClients ?? [];
+          final reps = state.dashboard.data?.recentReps ?? [];
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              await context.read<AdminHomeCubit>().fetchAdminHome();
+            },
+            child: Scaffold(
+              body: ListView(
+                padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 20.h),
                 children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        getGreetingWithEmoji(context),
+                        style: AppTextStyle.style18Bold,
+                      ),
+                      4.verticalSpace,
+                      Text(
+                        formattedDate(locale),
+                        style: AppTextStyle.style12W500.copyWith(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  20.verticalSpace,
+
                   Text(
-                    'المناديب',
-                    style: AppTextStyle.style14W900.copyWith(
-                      color: AppColors.blackColor.withAlpha(150),
+                    'الإحصائيات',
+                    style: AppTextStyle.style16W800.copyWith(
+                      color: AppColors.primaryDarkColor,
                     ),
                   ),
-                  TextButton(
-                    child: Text(
-                      'عرض الكل',
-                      style: AppTextStyle.style14W500.copyWith(
-                        color: AppColors.blackColor.withAlpha(150),
+                  12.verticalSpace,
+
+                  Row(
+                    children: [
+                      _statCard(
+                        title: 'عدد العملاء',
+                        count: stats?.totalClients ?? 0,
+                        icon: IconlyBroken.user3,
+                        onTap: () =>
+                            context.read<MainLayoutCubit>().gotoPage(1),
                       ),
-                    ),
-                    onPressed: () {
-                      context.pushNamed(
-                        AppRoutes.representativeScreen,
-                        extra: representatives,
-                      );
+                      12.horizontalSpace,
+                      _statCard(
+                        title: 'عدد الزيارات',
+                        count: stats?.totalVisits ?? 0,
+                        icon: Icons.view_compact_rounded,
+                        onTap: () =>
+                            context.read<MainLayoutCubit>().gotoPage(3),
+                      ),
+                      12.horizontalSpace,
+                      _statCard(
+                        title: 'عدد المناديب',
+                        count: stats?.totalReps ?? 0,
+                        icon: Icons.groups,
+                        onTap: () =>
+                            context.read<MainLayoutCubit>().gotoPage(2),
+                      ),
+                    ],
+                  ),
+
+                  20.verticalSpace,
+
+                  // 🔹 Actions
+                  // Text(
+                  //   'الإجراءات',
+                  //   style: AppTextStyle.style16W800.copyWith(
+                  //     color: AppColors.primaryDarkColor,
+                  //   ),
+                  // ),
+                  // 12.verticalSpace,
+
+                  // GridView.count(
+                  //   crossAxisCount: 2,
+                  //   shrinkWrap: true,
+                  //   physics: const NeverScrollableScrollPhysics(),
+                  //   crossAxisSpacing: 12,
+                  //   mainAxisSpacing: 12,
+                  //   childAspectRatio: 2.5,
+                  //   children: [
+                  //     _actionButton(
+                  //       text: 'إضافة عميل',
+                  //       icon: Icons.person_add,
+                  //       onTap: () async {
+                  //         final result = await context.pushNamed(
+                  //           AppRoutes.addClientsScreen,
+                  //         );
+                  //         if (result == true) {
+                  //           context.read<AdminHomeCubit>().fetchAdminHome();
+                  //         }
+                  //       },
+                  //     ),
+                  //     _actionButton(
+                  //       text: 'إضافة مندوب',
+                  //       icon: Icons.person,
+                  //       onTap: () async {
+                  //         // هنا رابط إضافة مندوب
+                  //       },
+                  //     ),
+                  //   ],
+                  // ),
+
+                  // 20.verticalSpace,
+
+                  // 🔹 Recent Reps
+                  _section(
+                    title: 'المناديب',
+                    onViewAll: () {
+                      context.read<MainLayoutCubit>().gotoPage(2);
                     },
                   ),
+                  if (reps.isEmpty)
+                    _emptyState()
+                  else
+                    Column(
+                      children: reps
+                          .map(
+                            (r) => _cardItem(
+                              icon: Icons.groups,
+                              title: r.name ?? '',
+                              subtitle: r.phone ?? '',
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRoutes.repDetailsScreen,
+                                  extra: r.id,
+                                );
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ),
+
+                  20.verticalSpace,
+
+                  _section(
+                    title: 'العملاء',
+                    onViewAll: () {
+                      context.read<MainLayoutCubit>().gotoPage(1);
+                    },
+                  ),
+                  if (clients.isEmpty)
+                    _emptyState()
+                  else
+                    Column(
+                      children: clients
+                          .map(
+                            (c) => _cardItem(
+                              icon: Icons.person,
+                              title: c.clientName ?? '',
+                              subtitle: c.phone ?? '',
+                              onTap: () {
+                                context.pushNamed(
+                                  AppRoutes.clientsDetailsScreen,
+                                  extra: c,
+                                );
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ),
                 ],
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: topThreeRepresentative.length,
-              itemBuilder: (context, index) {
-                final representative = topThreeRepresentative[index];
-                return InkWell(
-                  onTap: () {
-                    context.pushNamed(
-                      AppRoutes.representativeDetailsScreen,
-                      extra: representative,
-                    );
-                  },
-                  child: ListTile(
-                    title: Text(representative.name),
-                    subtitle: Text(representative.phone),
-                  ),
-                );
-              },
+          );
+        }
+
+        return const SizedBox();
+      },
+    );
+  }
+
+  Widget _statCard({
+    required String title,
+    required int count,
+    required IconData icon,
+    VoidCallback? onTap,
+  }) {
+    return Expanded(
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
+          height: 120.h,
+          padding: EdgeInsets.all(16.r),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            gradient: const LinearGradient(
+              colors: [AppColors.primaryColor, AppColors.primaryDarkColor],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, color: Colors.white),
+              const Spacer(),
+              Text(title, style: const TextStyle(color: Colors.white70)),
+              Text(
+                '$count',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _section({required String title, required VoidCallback onViewAll}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: AppTextStyle.style16W800.copyWith(
+            color: AppColors.primaryDarkColor,
+          ),
+        ),
+        InkWell(onTap: onViewAll, child: const Text('عرض الكل')),
+      ],
+    );
+  }
+
+  Widget _cardItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: 10.h),
+        padding: EdgeInsets.all(12.r),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(.05),
+              blurRadius: 8,
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: AppColors.primaryColor.withOpacity(.1),
+              child: Icon(icon, color: AppColors.primaryColor),
+            ),
+            10.horizontalSpace,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'العملاء',
-                    style: AppTextStyle.style14W900.copyWith(
-                      color: AppColors.blackColor.withAlpha(150),
-                    ),
-                  ),
-                  TextButton(
-                    child: Text(
-                      'عرض الكل',
-                      style: AppTextStyle.style14W500.copyWith(
-                        color: AppColors.blackColor.withAlpha(150),
-                      ),
-                    ),
-                    onPressed: () {
-                      context.pushNamed(
-                        AppRoutes.clientsScreen,
-                        extra: clients,
-                      );
-                    },
-                  ),
+                  Text(title, style: AppTextStyle.style14W800),
+                  Text(subtitle, style: const TextStyle(color: Colors.grey)),
                 ],
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: topThreeClients.length,
-              itemBuilder: (context, index) {
-                final client = topThreeClients[index];
-                return InkWell(
-                  onTap: () {
-                    context.pushNamed(
-                      AppRoutes.clientsDetailsScreen,
-                      extra: client,
-                    );
-                  },
-                  child: ListTile(
-                    title: Text(client.name),
-                    subtitle: Text(client.phone),
-                  ),
-                );
-              },
-            ),
+            const Icon(Icons.arrow_forward_ios, size: 14),
           ],
         ),
       ),
     );
   }
+
+  Widget _emptyState() {
+    return const Column(
+      children: [
+        Icon(Icons.inbox, size: 50, color: Colors.grey),
+        SizedBox(height: 6),
+        Text('لا توجد بيانات', style: TextStyle(color: Colors.grey)),
+      ],
+    );
+  }
 }
-
-
-
-
-
-
-
-
-
-// BlocBuilder<ProductCubit, ProductStates>(
-//         builder: (context, state) {
-//           if (state is ProductLoading) {
-//             return const Center(child: CircularProgressIndicator());
-//           }
-
-//           if (state is ProductSuccess) {
-//             return ListView.builder(
-//               itemCount: state.products.length,
-//               itemBuilder: (context, index) {
-//                 final product = state.products[index];
-//                 return ListTile(
-//                   title: Text(product.name),
-//                   subtitle: Text('Price: ${product.price}'),
-//                 );
-//               },
-//             );
-//           }
-
-//           if (state is ProductFailed) {
-//             return Center(child: Text(state.message));
-//           }
-
-//           return const SizedBox();
-//         },
-//       ),
-
-
-
-
-
- // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     context.read<ProductCubit>().addProduct(
-      //       ProductModel(
-      //         id: 0,
-      //         name: 'New Product',
-      //         price: 150,
-      //       ),
-      //     );
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),

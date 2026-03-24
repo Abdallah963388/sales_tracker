@@ -195,6 +195,12 @@ class AuthRepo {
         userModel.data!.user!.id,
       );
     }
+    if (userModel.data?.user?.role != null) {
+      await CacheHelper.set(
+        CacheKeys.userRole,
+        userModel.data!.user!.role,
+      );
+    }
   }
 
   Future<void> _clearUserData() async {
