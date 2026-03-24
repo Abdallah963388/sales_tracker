@@ -3,12 +3,10 @@
 <plist version="1.0">
 <dict>
 <key>NSLocationWhenInUseUsageDescription</key>
-<string>نحتاج إلى موقعك لتحديد مكان الزيارة</string>
+<string>يستخدم التطبيق موقعك أثناء الاستخدام لتحديد مواقع العملاء وتسجيل زياراتك بدقة.</string>
 
 <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>نحتاج إلى موقعك حتى أثناء تشغيل التطبيق في الخلفية</string>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
+<string>يستخدم التطبيق موقعك حتى في الخلفية لتحديث مواقع الزيارات وضمان تسجيلها بشكل صحيح.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
