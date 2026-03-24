@@ -1,8 +1,11 @@
-import 'dart:developer';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
+import 'package:sales_tracker/core/functions/config_loading.dart';
 import 'package:sales_tracker/core/responsive/responsive_config.dart';
+import 'package:sales_tracker/core/services/input_formatters.dart';
 import 'package:sales_tracker/core/shared_widgets/custom_app_bar.dart';
 import 'package:sales_tracker/core/shared_widgets/custom_drop_down_form_field.dart';
 import 'package:sales_tracker/core/shared_widgets/custom_primary_button.dart';
@@ -10,6 +13,10 @@ import 'package:sales_tracker/core/shared_widgets/custom_primary_textfield.dart'
 import 'package:sales_tracker/core/theme/app_colors.dart';
 import 'package:sales_tracker/core/theme/app_text_style.dart';
 import 'package:sales_tracker/features/clients/data/model/client_model.dart';
+import 'package:sales_tracker/features/clients/presentation/controller/client_cubit.dart';
+import 'package:sales_tracker/features/clients/presentation/controller/client_state.dart';
+import 'package:sales_tracker/features/visits/presentation/controller/visits_cubit.dart';
+import 'package:sales_tracker/features/visits/presentation/controller/visits_states.dart';
 
 class AddVisitsScreen extends StatefulWidget {
   const AddVisitsScreen({super.key});
@@ -19,181 +26,345 @@ class AddVisitsScreen extends StatefulWidget {
 }
 
 class _AddVisitsScreenState extends State<AddVisitsScreen> {
-  int? selectedClientId;
-  final TextEditingController visitDetailsController = TextEditingController();
+  PlatformFile? selectedFile;
   String? locationText;
-
-  // قائمة العملاء الثابتة
-  final List<ClientModel> clients = [
-    ClientModel(
-      id: 1,
-      name: 'Ahmad Ali',
-      placeName: 'Shop 1',
-      area: 'Cairo',
-      email: 'ahmad@example.com',
-      phone: '01012345678',
-      details: 'Electronics shop',
-    ),
-    ClientModel(
-      id: 2,
-      name: 'Sara Mohamed',
-      placeName: 'Shop 2',
-      area: 'Giza',
-      email: 'sara@example.com',
-      phone: '01087654321',
-      details: 'Clothes store',
-    ),
-    ClientModel(
-      id: 3,
-      name: 'Ali Hassan',
-      placeName: 'Shop 3',
-      area: 'Alexandria',
-      email: 'ali@example.com',
-      phone: '01011223344',
-      details: 'Bookstore',
-    ),
-    ClientModel(
-      id: 4,
-      name: 'Abdallah Jamal',
-      placeName: 'Shop 4',
-      area: 'Mynia',
-      email: 'abdallah@example.com',
-      phone: '01011223344',
-      details: 'Mobile store',
-    ),
-    ClientModel(
-      id: 5,
-      name: 'Ahmed Mahmoud',
-      placeName: 'Shop 5',
-      area: 'Aswan',
-      email: 'a@example.com',
-      phone: '01011223344',
-      details: 'Shoes store',
-    ),
-  ];
 
   Future<void> _confirmAndGetLocation() async {
     final confirm = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('تأكيد'),
-        content: const Text('هل تريد تحديد موقعك الحالي؟'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: Text(
-              'إلغاء',
-              style: AppTextStyle.style12W500.copyWith(
-                color: AppColors.blackColor,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('تأكيد'),
+          content: const Text('هل تريد تحديد موقعك الحالي؟'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text(
+                'إلغاء',
+                style: AppTextStyle.style12W500.copyWith(
+                  color: AppColors.blackColor,
+                ),
               ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('تأكيد'),
-          ),
-        ],
-      ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('تأكيد'),
+            ),
+          ],
+        );
+      },
     );
 
     if (confirm != true) return;
+
     await _getLocation();
   }
 
   Future<void> _getLocation() async {
+    showLoading();
     final location = Location();
 
-    var serviceEnabled = await location.serviceEnabled();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
+
+    serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
       if (!serviceEnabled) return;
     }
 
-    var permissionGranted = await location.hasPermission();
+    permissionGranted = await location.hasPermission();
     if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
       if (permissionGranted != PermissionStatus.granted) return;
     }
 
-    final locationData = await location.getLocation();
+    locationData = await location.getLocation();
+
+    final cubit = context.read<VisitsCubit>()
+      ..latitude = locationData.latitude
+      ..longitude = locationData.longitude;
+    cubit.locationNameController.text =
+        '${locationData.latitude}, ${locationData.longitude}';
+
     setState(() {
-      locationText =
-          'Lat: ${locationData.latitude}, Lng: ${locationData.longitude}';
-      log(locationText.toString());
+      locationText = cubit.locationNameController.text;
     });
+
+    if (mounted) {
+      hideLoading();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('تم تحديد الموقع بنجاح'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  Future<void> _pickFile(VisitsCubit cubit) async {
+    final result = await FilePicker.platform.pickFiles(type: FileType.any);
+    if (result != null) {
+      cubit.attachmentFile = result.files.first;
+      setState(() {});
+    }
   }
 
   @override
+  void initState() {
+    super.initState();
+    context.read<ClientCubit>().getClients();
+  }
+
+  final _formKey = GlobalKey<FormState>();
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(title: 'إضافة زيارة'),
-      body: Padding(
-        padding: EdgeInsets.all(8.r),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            12.verticalSpace,
-            CustomDropdownField<int>(
-              label: 'اختر عميل',
-              hint: 'اختر عميل',
-              items: clients.map((client) {
-                return DropdownMenuItem<int>(
-                  value: client.id,
-                  child: Text(client.name),
-                );
-              }).toList(),
-              value: selectedClientId,
-              onChanged: (value) {
-                setState(() {
-                  selectedClientId = value;
-                });
-              },
-            ),
-            12.verticalSpace,
-            CustomPrimaryButton(
-              text: 'تحديد الموقع',
-              width: 200.w,
-              height: 20.h,
-              icon: Icons.location_on,
-              onPressed: _confirmAndGetLocation,
-            ),
-            if (locationText != null) ...[
-              8.verticalSpace,
-              Text(
-                locationText!,
-                style: AppTextStyle.style14W500.copyWith(
-                  color: AppColors.blackColor.withAlpha(100),
-                ),
+    final visitsCubit = context.read<VisitsCubit>();
+
+    return BlocListener<VisitsCubit, VisitState>(
+      listener: (context, state) {
+        if (state.status == VisitStatus.addSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message ?? 'تمت إضافة الزيارة')),
+          );
+
+          context.pop(true);
+        }
+
+        if (state.status == VisitStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error ?? 'حدث خطأ')),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: const CustomAppBar(title: 'إضافة زيارة',canBack: true,),
+        body: BlocBuilder<ClientCubit, ClientState>(
+          builder: (context, clientState) {
+            // if (clientState.status == ClientStatus.loading) {
+            //   return const Center(child: CircularProgressIndicator());
+            // }
+
+            if (clientState.status == ClientStatus.failure) {
+              return Center(
+                child: Text('حدث خطأ: ${clientState.error ?? ''}'),
+              );
+            }
+
+            var clients = <Client>[];
+
+            final allClients = clientState.clients;
+
+            if (allClients != null) {
+              clients = allClients
+                  .expand<Client>(
+                    (clientsResponse) =>
+                        clientsResponse.data?.clients?.map(
+                          (c) => Client(
+                            id: c.id ?? 0,
+                            clientName: c.clientName ?? '',
+                            businessName: c.businessName ?? '',
+                            region: c.region ?? '',
+                            email: c.email ?? '',
+                            phone: c.phone ?? '',
+                            businessDetails: c.businessDetails ?? '',
+                          ),
+                        ) ??
+                        [],
+                  )
+                  .toList();
+            }
+            return Form(
+              key: _formKey,
+              child: ListView(
+                padding: EdgeInsets.all(12.r),
+                children: [
+                  Card(
+                    color: AppColors.whiteColor,
+                    child: Padding(
+                      padding: EdgeInsets.all(12.r),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('اختر العميل', style: AppTextStyle.style14W800),
+                          8.verticalSpace,
+                          CustomDropdownField<int>(
+                            // label: 'اختر عميل',
+                            hint: 'اختر عميل',
+                            value: visitsCubit.selectedClientId,
+                            items: clients.map<DropdownMenuItem<int>>((client) {
+                              return DropdownMenuItem(
+                                value: client.id,
+                                child: Text(client.clientName ?? ''),
+                              );
+                            }).toList(),
+                            onChanged: (v) => setState(
+                              () => visitsCubit.selectedClientId = v,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  12.verticalSpace,
+
+                  InkWell(
+                    onTap: _confirmAndGetLocation,
+                    child: Card(
+                      color: AppColors.whiteColor,
+                      child: Padding(
+                        padding: EdgeInsets.all(12.r),
+                        child: Column(
+                          children: [
+                            CustomPrimaryTextfield(
+                              inputFormatters: [AppInputFormatters.address],
+                              keyboardType: TextInputType.text,
+                              title: 'العنوان',
+                              controller: visitsCubit.addressNameController,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'من فضلك أدخل العنوان';
+                                }
+                                return null;
+                              },
+                            ),
+                            24.verticalSpace,
+                            Row(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('الموقع', style: AppTextStyle.style14W800),
+                                if (locationText != null) ...[
+                                  8.horizontalSpace,
+                                  Text(
+                                    locationText!,
+                                    style: AppTextStyle.style14W500,
+                                  ),
+                                ],
+                                const Spacer(),
+                                Icon(
+                                  Icons.add_location_alt_outlined,
+                                  size: 30.sp,
+                                  color: AppColors.primaryColor,
+                                ),
+                                // CustomPrimaryButton(
+                                //   text: 'تحديد الموقع',
+                                //   width: double.infinity,
+                                //   height: 45.h,
+                                //   icon: Icons.location_on,
+                                //   onPressed: () => _confirmAndGetLocation(visitsCubit),
+                                // ),
+                              ],
+                            ),
+                            8.verticalSpace,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  12.verticalSpace,
+                  Card(
+                    color: AppColors.whiteColor,
+                    child: Padding(
+                      padding: EdgeInsets.all(12.r),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomPrimaryTextfield(
+                            keyboardType: TextInputType.multiline,
+                            title: 'تفاصيل الزيارة',
+                            controller: visitsCubit.visitDetailsController,
+                            maxLines: 3,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'من فضلك أدخل تفاصيل الزيارة';
+                              }
+                              return null;
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  12.verticalSpace,
+                  InkWell(
+                    onTap: () => _pickFile(visitsCubit),
+                    child: Card(
+                      color: AppColors.whiteColor,
+                      child: Padding(
+                        padding: EdgeInsets.all(12.r),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'إرفاق ملف',
+                                  style: AppTextStyle.style14W800,
+                                ),
+                                Icon(
+                                  Icons.attach_file,
+                                  size: 30.sp,
+                                  color: AppColors.primaryColor,
+                                ),
+                                // CustomPrimaryButton(
+                                //     text: 'إرفاق ملف',
+                                //     width: double.infinity,
+                                //     height: 45.h,
+                                //     icon: Icons.attach_file,
+                                //     onPressed: () => _pickFile(visitsCubit),
+                                //   ),
+                              ],
+                            ),
+                            8.verticalSpace,
+                            if (visitsCubit.attachmentFile != null)
+                              Text(
+                                visitsCubit.attachmentFile!.name,
+                                style: AppTextStyle.style12W500.copyWith(
+                                  color: AppColors.primaryDarkColor,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  24.verticalSpace,
+                  CustomPrimaryButton(
+                    text: 'حفظ',
+                    width: double.infinity,
+                    height: 50.h,
+                    icon: Icons.save,
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) return;
+
+                      if (visitsCubit.selectedClientId == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('من فضلك اختر العميل'),
+                            backgroundColor: AppColors.errorColor,
+                          ),
+                        );
+                        return;
+                      }
+                      if (visitsCubit.latitude == null ||
+                          visitsCubit.longitude == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('من فضلك حدد الموقع'),
+                            backgroundColor: AppColors.errorColor,
+                          ),
+                        );
+                        return;
+                      }
+                      context.read<VisitsCubit>().addVisit();
+                    },
+                  ),
+                  40.verticalSpace,
+                ],
               ),
-            ],
-            12.verticalSpace,
-            CustomPrimaryTextfield(
-              text: 'تفاصيل الزيارة',
-              controller: visitDetailsController,
-              maxLines: 3,
-              validator: (v) => v!.isEmpty ? 'ادخل تفاصيل الزيارة' : null,
-            ),
-            12.verticalSpace,
-            CustomPrimaryButton(
-              text: 'حفظ الزيارة',
-              width: 200.w,
-              height: 20.h,
-              onPressed: () {
-                if (selectedClientId == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('اختر العميل أولاً')),
-                  );
-                  return;
-                }
-
-                log(
-                  'عميل: $selectedClientId, تفاصيل: ${visitDetailsController.text}, موقع: $locationText',
-                );
-
-                Navigator.pop(context);
-              },
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
