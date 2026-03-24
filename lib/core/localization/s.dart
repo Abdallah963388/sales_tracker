@@ -97,6 +97,18 @@ abstract class S {
     Locale('en'),
   ];
 
+  /// No description provided for @clients.
+  ///
+  /// In en, this message translates to:
+  /// **'Clients'**
+  String get clients;
+
+  /// No description provided for @visits.
+  ///
+  /// In en, this message translates to:
+  /// **'Visits'**
+  String get visits;
+
   /// No description provided for @loading.
   ///
   /// In en, this message translates to:
@@ -124,7 +136,7 @@ abstract class S {
   /// No description provided for @onboard1Title.
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Our App'**
+  /// **'View all your medical test results securely in one place.'**
   String get onboard1Title;
 
   /// No description provided for @onboard1Desc.
@@ -136,7 +148,7 @@ abstract class S {
   /// No description provided for @onboard2Title.
   ///
   /// In en, this message translates to:
-  /// **'Stay Connected'**
+  /// **'Receive instant notifications when new lab results are available.'**
   String get onboard2Title;
 
   /// No description provided for @onboard2Desc.
@@ -148,7 +160,7 @@ abstract class S {
   /// No description provided for @onboard3Title.
   ///
   /// In en, this message translates to:
-  /// **'Get Started Now'**
+  /// **'Easily track your lab history with clear organization for each test type.'**
   String get onboard3Title;
 
   /// No description provided for @onboard3Desc.
@@ -178,7 +190,7 @@ abstract class S {
   /// No description provided for @profile.
   ///
   /// In en, this message translates to:
-  /// **'Profile'**
+  /// **'My Account'**
   String get profile;
 
   /// No description provided for @services.
@@ -187,11 +199,365 @@ abstract class S {
   /// **'Services'**
   String get services;
 
+  /// No description provided for @testResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Lab Results'**
+  String get testResults;
+
   /// No description provided for @support.
   ///
   /// In en, this message translates to:
   /// **'Support'**
   String get support;
+
+  /// No description provided for @welcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcome;
+
+  /// No description provided for @mobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile Number'**
+  String get mobileNumber;
+
+  /// No description provided for @enterMobileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter mobile number'**
+  String get enterMobileNumber;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @enterYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get enterYourPassword;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Field is required'**
+  String get required;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgotPassword;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get login;
+
+  /// No description provided for @latestResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Latest Results'**
+  String get latestResults;
+
+  /// No description provided for @viewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// No description provided for @welcomeGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome 👋'**
+  String get welcomeGreeting;
+
+  /// No description provided for @trackYourTestResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your test results'**
+  String get trackYourTestResults;
+
+  /// No description provided for @viewLabResultsInstantly.
+  ///
+  /// In en, this message translates to:
+  /// **'You can now view your lab test results as soon as they are released.'**
+  String get viewLabResultsInstantly;
+
+  /// No description provided for @searchByVisitNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by visit number...'**
+  String get searchByVisitNumber;
+
+  /// No description provided for @fromTo.
+  ///
+  /// In en, this message translates to:
+  /// **'From - To'**
+  String get fromTo;
+
+  /// No description provided for @dateSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Date selected'**
+  String get dateSelected;
+
+  /// No description provided for @status.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get status;
+
+  /// No description provided for @filterResults.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter results'**
+  String get filterResults;
+
+  /// No description provided for @visitNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Number'**
+  String get visitNumber;
+
+  /// No description provided for @visitDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Date'**
+  String get visitDate;
+
+  /// No description provided for @tests.
+  ///
+  /// In en, this message translates to:
+  /// **'Tests'**
+  String get tests;
+
+  /// No description provided for @viewDetailsAndResults.
+  ///
+  /// In en, this message translates to:
+  /// **'View details and results'**
+  String get viewDetailsAndResults;
+
+  /// No description provided for @visitDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Visit Details'**
+  String get visitDetails;
+
+  /// No description provided for @viewResults.
+  ///
+  /// In en, this message translates to:
+  /// **'View Results'**
+  String get viewResults;
+
+  /// No description provided for @downloadResultsPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download & Print Results'**
+  String get downloadResultsPdf;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @appSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'App Settings'**
+  String get appSettings;
+
+  /// No description provided for @supportAndHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Support & Help'**
+  String get supportAndHelp;
+
+  /// No description provided for @appLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'App Language'**
+  String get appLanguage;
+
+  /// No description provided for @aboutUs.
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get aboutUs;
+
+  /// No description provided for @callUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Us'**
+  String get callUs;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @logOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Out'**
+  String get logOut;
+
+  /// No description provided for @changeLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Language'**
+  String get changeLanguage;
+
+  /// No description provided for @analysisRequestNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis Request No.'**
+  String get analysisRequestNumber;
+
+  /// No description provided for @completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completed;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @noResults.
+  ///
+  /// In en, this message translates to:
+  /// **'No results'**
+  String get noResults;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @booking.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking'**
+  String get booking;
+
+  /// No description provided for @loadingError.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while loading'**
+  String get loadingError;
+
+  /// No description provided for @open.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get open;
+
+  /// No description provided for @downloadSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloaded successfully'**
+  String get downloadSuccess;
+
+  /// No description provided for @noResultLink.
+  ///
+  /// In en, this message translates to:
+  /// **'No result link available'**
+  String get noResultLink;
+
+  /// No description provided for @pressAgainToExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Press again to exit the app'**
+  String get pressAgainToExit;
+
+  /// No description provided for @poweredBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Powered by'**
+  String get poweredBy;
+
+  /// No description provided for @areYouSureLogout.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to log out?'**
+  String get areYouSureLogout;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @fileNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'File Number'**
+  String get fileNumber;
+
+  /// No description provided for @versionNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Version Number'**
+  String get versionNumber;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong!'**
+  String get somethingWentWrong;
+
+  /// No description provided for @goBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Go Back'**
+  String get goBack;
+
+  /// No description provided for @updateStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Status'**
+  String get updateStatus;
+
+  /// No description provided for @serverMaintenanceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We are currently performing some server updates to improve the service.\nPlease try again later.'**
+  String get serverMaintenanceMessage;
+
+  /// No description provided for @underMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Maintenance'**
+  String get underMaintenance;
+
+  /// No description provided for @reps.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps'**
+  String get reps;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
