@@ -1,17 +1,60 @@
+import 'package:equatable/equatable.dart';
 import 'package:sales_tracker/features/clients/data/model/client_model.dart';
 
-abstract class ClientState {}
-
-class ClientInitial extends ClientState {}
-
-class ClientLoading extends ClientState {}
-
-class ClientSuccess extends ClientState {
-  ClientSuccess(this.clients);
-  final List<ClientModel> clients;
+enum ClientStatus {
+  initial,
+  loading,
+  success,
+  failure,
+  addLoading,
+  addSuccess,
+  deleteLoading,
+  deleteSuccess,
+  updateLoading,
+  updateSuccess,
 }
 
-class ClientFailed extends ClientState {
-  ClientFailed(this.message);
-  final String message;
+class ClientState extends Equatable {
+  const ClientState({
+    this.status = ClientStatus.initial,
+    this.clients,
+    this.allClients,
+    this.singleClient,
+    this.message,
+    this.error,
+  });
+  final ClientStatus status;
+  final List<ClientsResponse>? clients;
+  final List<ClientsResponse>? allClients;
+  final Client? singleClient;
+  final String? message;
+  final String? error;
+
+  ClientState copyWith({
+    ClientStatus? status,
+    List<ClientsResponse>? clients,
+    List<ClientsResponse>? allClients,
+    Client? singleClient,
+    String? message,
+    String? error,
+  }) {
+    return ClientState(
+      status: status ?? this.status,
+      clients: clients ?? this.clients,
+      allClients: allClients ?? this.allClients,
+      singleClient: singleClient ?? this.singleClient,
+      message: message ?? this.message,
+      error: error ?? this.error,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+    status,
+    clients,
+    allClients,
+    singleClient,
+    message,
+    error,
+  ];
 }
