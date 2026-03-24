@@ -197,7 +197,11 @@ class _VisitsDetailsScreenState extends State<VisitsDetailsScreen> {
                           if (phone.isNotEmpty) {
                             final url = Uri(scheme: 'tel', path: phone);
                             if (await canLaunchUrl(url)) {
-                              await launchUrl(url);
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode
+                                    .externalApplication, // مهم للـ iOS
+                              );
                             }
                           }
                         },
@@ -211,7 +215,10 @@ class _VisitsDetailsScreenState extends State<VisitsDetailsScreen> {
                           if (email.isNotEmpty) {
                             final url = Uri(scheme: 'mailto', path: email);
                             if (await canLaunchUrl(url)) {
-                              await launchUrl(url);
+                              await launchUrl(
+                                url,
+                                mode: LaunchMode.externalApplication,
+                              );
                             }
                           }
                         },
