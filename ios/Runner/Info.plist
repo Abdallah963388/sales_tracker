@@ -5,8 +5,6 @@
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>يستخدم التطبيق موقعك أثناء الاستخدام لتحديد مواقع العملاء وتسجيل زياراتك بدقة.</string>
 
-<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>يستخدم التطبيق موقعك حتى في الخلفية لتحديث مواقع الزيارات وضمان تسجيلها بشكل صحيح.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
