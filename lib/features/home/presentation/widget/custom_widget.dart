@@ -26,7 +26,7 @@ class CustomWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(24.r),
         ),
         width: double.infinity,
-        height: 150.h,
+        height: 80.h,
         child: InkWell(
           onTap: onTap,
           child: Column(
@@ -35,7 +35,7 @@ class CustomWidget extends StatelessWidget {
             children: [
               Icon(
                 Icons.add,
-                size: 40.r,
+                size: 30.r,
                 color: AppColors.whiteColor,
               ),
               12.verticalSpace,

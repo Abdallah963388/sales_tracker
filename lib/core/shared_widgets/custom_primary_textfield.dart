@@ -28,6 +28,8 @@ class CustomPrimaryTextfield extends StatelessWidget {
     this.enabled = true,
     this.maxLines = 1,
     this.title,
+    this.onTogglePassword,
+    this.obscureText,
   });
   final TextEditingController? controller;
   final FocusNode? focusNode;
@@ -49,19 +51,16 @@ class CustomPrimaryTextfield extends StatelessWidget {
   final bool? enabled;
   final int? maxLines;
   final String? title;
+  final VoidCallback? onTogglePassword;
+  final bool? obscureText;
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
-          child: Text(
-            title ?? '',
-            style: AppTextStyle.style14W500.copyWith(
-              color: AppColors.blackColor.withAlpha(150),
-            ),
-          ),
+          padding: EdgeInsets.zero,
+          child: Text(title ?? '', style: AppTextStyle.style14W800),
         ),
         5.verticalSpace,
         SizedBox(
@@ -85,7 +84,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
             controller: controller,
             cursorWidth: 0.5,
             cursorColor: AppColors.primaryColor,
-            obscureText: isPassword ?? false,
+            obscureText: isPassword ?? false ? (obscureText ?? true) : false,
             decoration: InputDecoration(
               hint: Text(
                 text ?? '',
@@ -99,7 +98,16 @@ class CustomPrimaryTextfield extends StatelessWidget {
               focusedBorder: customOutlineInputBorder(),
               enabledBorder: customOutlineInputBorder(),
               disabledBorder: customOutlineInputBorder(),
-              suffixIcon: suffix,
+              suffixIcon: isPassword ?? false
+                  ? IconButton(
+                      icon: Icon(
+                        (obscureText ?? true)
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: onTogglePassword,
+                    )
+                  : suffix,
               prefixIcon: prefix,
               contentPadding: EdgeInsets.symmetric(
                 horizontal: 12.w,

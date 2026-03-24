@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sales_tracker/core/cache_helper/cache_helper.dart';
+import 'package:sales_tracker/core/cache_helper/cache_values.dart';
 
-import '/../core/cache_helper/cache_helper.dart';
-import '/../core/cache_helper/cache_values.dart';
 import '/../core/resources/assets/app_images.dart';
 import '/../core/responsive/responsive_config.dart';
 import '/../core/routing/app_routes.dart';
@@ -29,11 +29,12 @@ class _SplashViewState extends State<SplashView> {
     _hasRedirected = true;
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
-    final hasSeenOnboarding = CacheHelper.get<bool>(CacheKeys.isFirstOpen);
-    if (hasSeenOnboarding == null) {
-      context.go(AppRoutes.mainLayoutScreen);
-    } else {
-      context.go(AppRoutes.loginScreen);
+    final token = await CacheHelper.getSecured(CacheKeys.userToken);
+    final isLogin = token?.toString();
+    if (isLogin != null && isLogin.isNotEmpty) {
+     context.go(AppRoutes.mainLayoutScreen);
+    } else {  context.go(AppRoutes.loginScreen);
+     
     }
   }
 
@@ -47,7 +48,7 @@ class _SplashViewState extends State<SplashView> {
             child: Image.asset(
               AppImages.appLogo,
               fit: BoxFit.cover,
-              width: SizeConfig.screenWidth * 0.8,
+              width: 150.w,
             ),
           ),
         ],
