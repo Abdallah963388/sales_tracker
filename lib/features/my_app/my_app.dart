@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sales_tracker/core/functions/config_loading.dart';
 
 import '/../core/di.dart';
 import '/../core/localization/s.dart';
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
           return GestureDetector(
             onTap: () => unfocusScope(context),
             child: MaterialApp.router(
-              title: 'm',
+              title: 'SIT Sales Tracker',
               debugShowCheckedModeBanner: false,
               routerConfig: RouterGenerationConfig.goRouter,
               theme: Appthemes.lightTheme(),
@@ -37,13 +39,12 @@ class MyApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              // builder: (context, child) {
-              //   return Directionality(
-              //     textDirection: TextDirection.rtl,
+              builder: (context, myWidget) {
+                myWidget = EasyLoading.init()(context, myWidget);
+                configLoading(context);
 
-              //     child: child!,
-              //   );
-              // },
+                return myWidget;
+              },
             ),
           );
         },

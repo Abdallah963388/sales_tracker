@@ -17,11 +17,12 @@ class DioFactory {
     );
     final dioInterceptors = DioInterceptors(dio);
     dio.interceptors.addAll([
-      AuthInterceptor(),
-      AppErrorInterceptor(),
-      RetryInterceptor(dio: dio),
-      dioInterceptors.languageInterceptor(),
       dioInterceptors.debugeDioLogger(),
+      dioInterceptors.languageInterceptor(),
+      AuthInterceptor(),
+      RetryInterceptor(dio: dio),
+
+      AppErrorInterceptor(),
     ]);
 
     return dio;

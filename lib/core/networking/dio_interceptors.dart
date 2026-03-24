@@ -41,6 +41,11 @@ class RetryInterceptor extends Interceptor {
     DioException err,
     ErrorInterceptorHandler handler,
   ) async {
+    // لا نحاول إعادة الطلب إذا هناك response من السيرفر
+    if (err.response != null) {
+      return super.onError(err, handler);
+    }
+
     if (_shouldRetry(err)) {
       const maxRetries = 3;
       const retryDelay = Duration(seconds: 2);
@@ -65,8 +70,20 @@ class RetryInterceptor extends Interceptor {
             options: newOptions,
           );
           return handler.resolve(response);
-        } catch (e) {
-          return handler.reject(e as DioException);
+        } catch (e, st) {
+          print('⚠️ RetryInterceptor failed: $e');
+          print(st);
+          if (e is DioException) {
+            return handler.reject(e);
+          } else {
+            return handler.reject(
+              DioException(
+                requestOptions: err.requestOptions,
+                error: e,
+                type: DioExceptionType.unknown,
+              ),
+            );
+          }
         }
       }
     }
@@ -78,36 +95,36 @@ class RetryInterceptor extends Interceptor {
     return err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.sendTimeout ||
         err.type == DioExceptionType.receiveTimeout ||
-        (err.type == DioExceptionType.unknown &&
-            (err.message?.contains('SocketException') ?? false));
+        err.type == DioExceptionType.unknown ||
+        (err.message?.contains('SocketException') ?? false);
   }
 }
 
 class AppErrorInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    if (err.requestOptions.extra['skipErrorInterceptor'] == true) {
-      return handler.next(err); // مرر الخطأ للكيوبت ليعالجه بنفسه وتوقف هنا
-    }
     final context = navigatorKey.currentContext;
 
+    // إذا طلب تجاوز المعالجة، مرره مباشرة
+    if (err.requestOptions.extra['skipErrorInterceptor'] == true) {
+      return handler.next(err);
+    }
+
+    // حالة تسجيل خروج
     if (err.response?.statusCode == 401) {
       if (context != null) {
         CacheHelper.removeSecured(CacheKeys.userToken);
         GoRouter.of(context).goNamed(AppRoutes.loginScreen);
       }
-    } else if (err.response?.statusCode == 503 ||
+    }
+    // حالة صيانة أو أخطاء حرجة
+    else if (err.response?.statusCode == 503 ||
+        err.response?.statusCode == 500 ||
         err.type == DioExceptionType.unknown ||
         err.type == DioExceptionType.connectionTimeout ||
         err.type == DioExceptionType.receiveTimeout ||
         err.type == DioExceptionType.sendTimeout ||
-        err.type == DioExceptionType.unknown ||
-        (err.message?.contains('SocketException') ?? false) ||
-        err.type == DioExceptionType.badResponse ||
-        err.type == DioExceptionType.cancel ||
-        err.type == DioExceptionType.connectionError ||
-        err.type == DioExceptionType.badCertificate ||
-        err.response?.statusCode == 500) {
+        (err.message?.contains('SocketException') ?? false)) {
       if (context != null) {
         final currentRoute = GoRouterState.of(context).uri.toString();
         if (currentRoute != AppRoutes.maintenanceScreen) {
@@ -116,10 +133,10 @@ class AppErrorInterceptor extends Interceptor {
       }
     }
 
-    super.onError(err, handler);
+    // مهم: مرر الخطأ دائمًا للـ Bloc/UI
+    handler.next(err);
   }
 }
-
 class AuthInterceptor extends Interceptor {
   @override
   Future<void> onRequest(

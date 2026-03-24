@@ -26,19 +26,28 @@ class ServerFailure extends Failure {
       case DioExceptionType.cancel:
         return ServerFailure('Request to ApiServer was canceled');
       case DioExceptionType.unknown:
-        if (dioException.message?.contains('SocketException') ?? false) {
+        final msg = dioException.error?.toString() ?? dioException.message;
+        if (msg?.contains('SocketException') ?? false) {
           return ServerFailure('No Internet Connection');
         }
         return ServerFailure('Unexpected Error, Please try again!');
       default:
-        return ServerFailure('Opps There was an Error, Please try again');
+        print(
+          '⚠️ Unhandled DioException: ${dioException.type}, message: ${dioException.message}',
+        );
+        return ServerFailure('Oops! There was an Error, Please try again');
     }
   }
 
   factory ServerFailure.fromResponse(int? statusCode, dynamic response) {
-    final msg = response['message'] ?? 'Unknown Error';
+    final msg =
+        (response is Map<String, dynamic> ? response['message'] : null) ??
+        'Unknown Error';
 
-    if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
+    if (statusCode == 400 ||
+        statusCode == 401 ||
+        statusCode == 403 ||
+        statusCode == 422) {
       return ServerFailure(msg.toString());
     } else if (statusCode == 404) {
       return ServerFailure('Your request not found, Please try later!');

@@ -9,7 +9,7 @@ class CacheHelper {
 
   static SharedPreferences? _sharedPreferences;
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-
+  // static late SharedPreferences sharedPreferences;
   static Future<void> init() async {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
@@ -30,6 +30,10 @@ class CacheHelper {
 
   static String getLanguage() {
     return get<String>(CacheKeys.currentLanguage) ?? 'ar';
+  }
+
+  static dynamic getData({required String key}) {
+    return _sharedPreferences?.get(key);
   }
 
   static bool isEnglish() => getLanguage() == 'en';
