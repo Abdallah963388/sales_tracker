@@ -207,14 +207,10 @@ class HomeScreen extends StatelessWidget {
             children: [
               Icon(icon, color: Colors.white),
               const Spacer(),
-              Text(title, style: const TextStyle(color: Colors.white70)),
+              Text(title, style: AppTextStyle.style14W500.copyWith(color: AppColors.whiteColor)),
               Text(
                 '$count',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+                style:  AppTextStyle.style14W800.copyWith(color: AppColors.whiteColor)
               ),
             ],
           ),
