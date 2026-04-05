@@ -268,7 +268,7 @@ class RouterGenerationConfig {
       // GoRoute(
       //   path: AppRoutes.onBoardingScreen,
       //   name: AppRoutes.onBoardingScreen,
-      //   builder: (context, state) => BlocProvider<OnboardingCubit>(
+      //   builder: (context, state) => BlocProvider<OnboardingCubit>(  
       //     create: (context) => getIt<OnboardingCubit>(),
       //     child: const OnBoardingScreen(),
       //   ),

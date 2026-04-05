@@ -43,11 +43,22 @@ class MainLayoutView extends StatefulWidget {
 class _MainLayoutViewState extends State<MainLayoutView> {
   late final PageController pageController;
   late final MainLayoutCubit cubit;
+
   String? userRole;
   String? userId;
+
+  // Cubits
+  late final RepHomeCubit repHomeCubit;
+  late final ClientCubit clientCubit;
+  late final VisitsCubit visitsCubit;
+  late final ProfileCubit profileCubit;
+  late final LoginCubit loginCubit;
+
+  late final AdminHomeCubit adminHomeCubit;
+  late final RepCubit repCubit;
+
   Future<String> checkRole() async {
     userId = CacheHelper.getData(key: CacheKeys.userId).toString();
-
     userRole =
         CacheHelper.getData(key: CacheKeys.userRole)?.toString() ?? 'rep';
     return userRole.toString();
@@ -56,122 +67,134 @@ class _MainLayoutViewState extends State<MainLayoutView> {
   @override
   void initState() {
     super.initState();
+
     cubit = context.read<MainLayoutCubit>();
-    checkRole().then((role) {
-      if (!mounted) return; // تأكد أن الصفحة لا تزال موجودة
-      _setupTabs();
-    });
-    Future.delayed(const Duration(seconds: 1), () {
-      if (mounted) {
-        _setupTabs();
-      }
-    });
+
     cubit.controller = PageController(
       initialPage: cubit.state.currentIndex,
     );
     pageController = cubit.controller!;
+
+    // initialize cubits once
+    repHomeCubit = getIt<RepHomeCubit>();
+    clientCubit = getIt<ClientCubit>();
+    visitsCubit = getIt<VisitsCubit>();
+    profileCubit = getIt<ProfileCubit>();
+    loginCubit = getIt<LoginCubit>();
+    adminHomeCubit = getIt<AdminHomeCubit>();
+    repCubit = getIt<RepCubit>();
+
+    checkRole().then((role) {
+      if (!mounted) return;
+
+      _loadInitialData();
+      _setupTabs();
+    });
+  }
+
+  void _loadInitialData() {
+    if (userRole == UserRole.rep) {
+      repHomeCubit.fetchRepHome();
+      clientCubit.getClients();
+      visitsCubit.getVisits();
+      profileCubit.getProfile();
+    } else if (userRole == UserRole.admin) {
+      adminHomeCubit.fetchAdminHome();
+      clientCubit.getAllClients();
+      repCubit.getReps();
+      visitsCubit.getAllVisits();
+      profileCubit.getProfile();
+    }
   }
 
   void _setupTabs() {
     if (!mounted) return;
-    Future.microtask(() {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final s = S.of(context)!;
-        cubit.setTabs([
-          if (userRole == UserRole.rep) ...[
-            TabItemModel(
-              label: s.home,
-              icon: IconlyBroken.home,
-              page: BlocProvider<RepHomeCubit>.value(
-                value: getIt<RepHomeCubit>()..fetchRepHome(),
-                child: const HomeScreen(),
-              ),
-            ),
-            TabItemModel(
-              label: s.clients,
-              icon: IconlyBroken.user3,
-              page: BlocProvider.value(
-                value: getIt<ClientCubit>()..getClients(),
-                child: const ClientsScreen(),
-              ),
-            ),
-            TabItemModel(
-              label: s.visits,
-              icon: IconlyBroken.work,
-              page: BlocProvider.value(
-                value: getIt<VisitsCubit>()..getVisits(),
-                child: const VisitScreen(),
-              ),
-            ),
-            TabItemModel(
-              label: s.profile,
-              icon: IconlyBroken.profile,
-              page: MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: getIt<ProfileCubit>()..getProfile(),
-                  ),
-                  BlocProvider.value(
-                    value: getIt<LoginCubit>(),
-                  ),
-                ],
-                child: const ProfileView(),
-              ),
-            ),
-          ] else if (userRole == UserRole.admin) ...[
-            TabItemModel(
-              label: s.home,
-              icon: IconlyBroken.home,
-              page: BlocProvider<AdminHomeCubit>.value(
-                value: getIt<AdminHomeCubit>()..fetchAdminHome(),
-                child: const AdminHomeScreen(),
-              ),
-            ),
 
-            TabItemModel(
-              label: s.clients,
-              icon: IconlyBroken.user3,
-              page: BlocProvider.value(
-                value: getIt<ClientCubit>()..getAllClients(),
-                child: const AllClientsScreen(),
-              ),
-            ),
+    final s = S.of(context)!;
 
-            TabItemModel(
-              label: s.reps,
-              icon: IconlyBroken.work,
-              page: BlocProvider.value(
-                value: getIt<RepCubit>()..getReps(),
-                child: const RepScreen(),
-              ),
-            ),
-            TabItemModel(
-              label: s.visits,
-              icon: IconlyBroken.discovery,
-              page: BlocProvider.value(
-                value: getIt<VisitsCubit>()..getAllVisits(),
-                child: const AllVisitsScreen(),
-              ),
-            ),
-            TabItemModel(
-              label: s.profile,
-              icon: IconlyBroken.profile,
-              page: MultiBlocProvider(
-                providers: [
-                  BlocProvider.value(
-                    value: getIt<ProfileCubit>()..getProfile(),
-                  ),
-                  BlocProvider.value(
-                    value: getIt<LoginCubit>(),
-                  ),
-                ],
-                child: const ProfileView(),
-              ),
-            ),
-          ],
-        ]);
-      });
-    });
+    cubit.setTabs([
+      if (userRole == UserRole.rep) ...[
+        TabItemModel(
+          label: s.home,
+          icon: IconlyBroken.home,
+          page: BlocProvider.value(
+            value: repHomeCubit,
+            child: const HomeScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.clients,
+          icon: IconlyBroken.user3,
+          page: BlocProvider.value(
+            value: clientCubit,
+            child: const ClientsScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.visits,
+          icon: IconlyBroken.work,
+          page: BlocProvider.value(
+            value: visitsCubit,
+            child: const VisitScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.profile,
+          icon: IconlyBroken.profile,
+          page: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: profileCubit),
+              BlocProvider.value(value: loginCubit),
+            ],
+            child: const ProfileView(),
+          ),
+        ),
+      ] else if (userRole == UserRole.admin) ...[
+        TabItemModel(
+          label: s.home,
+          icon: IconlyBroken.home,
+          page: BlocProvider.value(
+            value: adminHomeCubit,
+            child: const AdminHomeScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.clients,
+          icon: IconlyBroken.user3,
+          page: BlocProvider.value(
+            value: clientCubit,
+            child: const AllClientsScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.reps,
+          icon: IconlyBroken.work,
+          page: BlocProvider.value(
+            value: repCubit,
+            child: const RepScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.visits,
+          icon: IconlyBroken.discovery,
+          page: BlocProvider.value(
+            value: visitsCubit,
+            child: const AllVisitsScreen(),
+          ),
+        ),
+        TabItemModel(
+          label: s.profile,
+          icon: IconlyBroken.profile,
+          page: MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: profileCubit),
+              BlocProvider.value(value: loginCubit),
+            ],
+            child: const ProfileView(),
+          ),
+        ),
+      ],
+    ]);
   }
 
   @override
@@ -186,8 +209,6 @@ class _MainLayoutViewState extends State<MainLayoutView> {
       builder: (context, state) {
         return BlocBuilder<MainLayoutCubit, MainLayoutState>(
           builder: (context, state) {
-            final cubit = context.read<MainLayoutCubit>();
-
             if (state.tabs.isEmpty) {
               log(userRole.toString());
               return const Scaffold(
@@ -195,12 +216,6 @@ class _MainLayoutViewState extends State<MainLayoutView> {
               );
             }
             log(state.tabs.length.toString());
-
-            // if (state.tabs.length < 2) {
-            //   return const Scaffold(
-            //     body: Center(child: CircularProgressIndicator()),
-            //   );
-            // }
 
             return PopScope(
               canPop: false,
@@ -246,42 +261,7 @@ class _MainLayoutViewState extends State<MainLayoutView> {
                 }
                 SystemNavigator.pop();
               },
-              // onPopInvokedWithResult: (didPop, result) {
-              //   if (didPop) return;
 
-              //   cubit.backPressCount++;
-
-              //   if (cubit.backPressCount == 1 && state.currentIndex != 0) {
-              //     cubit.goToPage(0, _pageController);
-              //   } else if (cubit.backPressCount == 1 &&
-              //       state.currentIndex == 0) {
-              //     ScaffoldMessenger.of(context)
-              //       ..removeCurrentSnackBar()
-              //       ..showSnackBar(
-              //         SnackBar(
-              //           elevation: 0,
-              //           backgroundColor: Colors.transparent,
-              //           content: Container(
-              //             margin: EdgeInsets.all(4.r),
-              //             padding: EdgeInsets.symmetric(vertical: 10.r),
-              //             decoration: BoxDecoration(
-              //               color: AppColors.primaryColor.withAlpha(220),
-              //               borderRadius: BorderRadius.circular(10.r),
-              //             ),
-              //             child: Text(
-              //               'اضغط مرة أخرى للخروج',
-              //               textAlign: TextAlign.center,
-              //               style: AppTextStyle.style14W500.copyWith(
-              //                 color: AppColors.thirdColor,
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       );
-              //   } else {
-              //     SystemNavigator.pop();
-              //   }
-              // },
               child: Scaffold(
                 appBar: AppBar(
                   toolbarHeight: 10.h,
@@ -295,26 +275,6 @@ class _MainLayoutViewState extends State<MainLayoutView> {
                       ),
                     ),
                   ),
-
-                  // shape: const OutlineInputBorder(
-                  // borderSide: BorderSide(
-                  //   color: AppColors.primaryColor,
-                  //   width: 0.7,
-                  // ),
-                  // borderRadius: BorderRadius.only(
-                  //   bottomLeft: Radius.circular(10.r),
-                  //   bottomRight: Radius.circular(10.r),
-                  // ),
-                  // ),
-                  // centerTitle: true,
-                  // title: Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  //   child: Image.asset(
-                  //     AppImages.appLogoWhithoutBg,
-                  //     width: 50.w,
-                  //     fit: BoxFit.fitWidth,
-                  //   ),
-                  // ),
                 ),
                 body: PageView(
                   physics: const NeverScrollableScrollPhysics(),
@@ -324,18 +284,7 @@ class _MainLayoutViewState extends State<MainLayoutView> {
                 ),
                 bottomNavigationBar: Container(
                   clipBehavior: Clip.antiAlias,
-                  decoration: const BoxDecoration(
-                    // color: AppColors.primaryDarkColor,
-                    // border: Border.all(
-                    //   color: AppColors.primaryColor,
-                    //   width: 0.8,
-                    //   strokeAlign: BorderSide.strokeAlignOutside,
-                    // ),
-                    // borderRadius: BorderRadius.only(
-                    //   topLeft: Radius.circular(10.r),
-                    //   topRight: Radius.circular(10.r),
-                    // ),
-                  ),
+                  decoration: const BoxDecoration(),
                   child: BottomNavigationBar(
                     backgroundColor: AppColors.whiteColor,
                     useLegacyColorScheme: false,
