@@ -32,9 +32,9 @@ class _SplashViewState extends State<SplashView> {
     final token = await CacheHelper.getSecured(CacheKeys.userToken);
     final isLogin = token?.toString();
     if (isLogin != null && isLogin.isNotEmpty) {
-     context.go(AppRoutes.mainLayoutScreen);
-    } else {  context.go(AppRoutes.loginScreen);
-     
+      context.go(AppRoutes.mainLayoutScreen);
+    } else {
+      context.go(AppRoutes.loginScreen);
     }
   }
 
@@ -48,7 +48,7 @@ class _SplashViewState extends State<SplashView> {
             child: Image.asset(
               AppImages.appLogo,
               fit: BoxFit.cover,
-              width: 150.w,
+              width: 200.w,
             ),
           ),
         ],

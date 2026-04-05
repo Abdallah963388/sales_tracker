@@ -66,13 +66,13 @@ class _LogInScreenState extends State<LogInScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // ... (Language Button Code omitted for brevity, logic remains same)
-                      20.verticalSpace,
+                      // 20.verticalSpace,
 
                       /// Logo
                       Center(
-                        child: Image.asset(AppImages.appLogo, height: 100.h),
+                        child: Image.asset(AppImages.appLogo, width: 250.h),
                       ),
-                      20.verticalSpace,
+                      // 20.verticalSpace,
 
                       /// Welcome
                       Center(
