@@ -31,7 +31,7 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/><key>NSPhotoLibraryUsageDescription</key>
-           <string>يتيح التطبيق للمستخدم اختيار صور من جهازه لإرفاقها داخل التطبيق فقط. لا يتم استخدام الصور لأي أغراض أخرى أو تتبع.</string>
+            <string>يتيح التطبيق للمستخدم اختيار صور من جهازه لإرفاقها داخل التطبيق فقط. لا يتم استخدام الصور لأي أغراض أخرى أو تتبع.</string>
 <key>NSLocationWhenInUseUsageDescription</key>
 <string>يستخدم التطبيق موقعك أثناء استخدامه فقط لتحديد المواقع المتعلقة بالعمل وتحسين دقة البيانات. لا يتم استخدام الموقع للتتبع أو لأي أغراض أخرى.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
