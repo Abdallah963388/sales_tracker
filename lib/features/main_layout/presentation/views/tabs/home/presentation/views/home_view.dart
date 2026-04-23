@@ -351,6 +351,7 @@ Widget _statCard({
             16.horizontalSpace,
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
