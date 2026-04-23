@@ -322,7 +322,6 @@ Widget _statCard({
     child: InkWell(
       onTap: onTap,
       child: Container(
-        height: 170.h,
         padding: EdgeInsets.all(16.r),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),

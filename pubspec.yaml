@@ -65,7 +65,7 @@ flutter:
         - asset: assets/fonts/Inter_18pt-Medium.ttf
         - asset: assets/fonts/Inter_18pt-Bold.ttf
 icons_launcher:
-  image_path: "assets/images/png/logo.png"
+  image_path: "assets/images/png/sales_logo.png"
   platforms:
     android:
       enable: true
