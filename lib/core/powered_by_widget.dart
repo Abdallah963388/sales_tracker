@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sales_tracker/core/debug_print_widget.dart';
-import 'package:sales_tracker/core/get_app_version.dart';
-import 'package:sales_tracker/core/responsive/responsive_config.dart';
-import 'package:sales_tracker/core/theme/app_colors.dart';
-import 'package:sales_tracker/core/theme/app_text_style.dart';
-import 'package:sales_tracker/core/update_screen.dart';
+import 'package:sit/core/debug_print_widget.dart';
+import 'package:sit/core/get_app_version.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
+import 'package:sit/core/update_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PoweredByWidget extends StatelessWidget {
@@ -13,9 +13,9 @@ class PoweredByWidget extends StatelessWidget {
   Future<void> _launchUpdateUrl(BuildContext context) async {
     final url = Uri.parse(
       // Theme.of(context).platform == TargetPlatform.iOS
-          // ? 
-          UpdateScreen.siteUrl
-          // : UpdateScreen.androidUrl,
+      // ?
+      UpdateScreen.siteUrl,
+      // : UpdateScreen.androidUrl,
     );
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       debugPrintWidget('Could not launch $url');
@@ -45,7 +45,7 @@ class PoweredByWidget extends StatelessWidget {
                     ),
                   ),
                   2.horizontalSpace,
-                  Image.asset('assets/images/sit_logo.png', height: 50.h),
+                  Image.asset('assets/images/png/logo.png', height: 50.h),
                 ],
               ),
               2.verticalSpace,

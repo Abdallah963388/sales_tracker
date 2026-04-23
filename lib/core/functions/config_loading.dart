@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:sales_tracker/core/constants.dart';
-import 'package:sales_tracker/core/localization/s.dart';
-import 'package:sales_tracker/core/responsive/responsive_config.dart';
-import 'package:sales_tracker/core/shared_widgets/custom_progress_indicator.dart';
-import 'package:sales_tracker/core/theme/app_colors.dart';
-import 'package:sales_tracker/core/theme/app_text_style.dart';
+import 'package:sit/core/constants.dart';
+import 'package:sit/core/localization/s.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/shared_widgets/custom_progress_indicator.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 
 void configLoading(BuildContext context) {
   EasyLoading.instance

@@ -1,4 +1,4 @@
-# sales_tracker
+# sit
 
 A new Flutter project.
 

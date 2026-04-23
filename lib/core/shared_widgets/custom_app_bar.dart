@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sales_tracker/core/responsive/responsive_config.dart';
-import 'package:sales_tracker/core/theme/app_colors.dart';
-import 'package:sales_tracker/core/theme/app_text_style.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.canBack = false,
     this.actions,
     this.bottom,
+    this.titleWidget,
     this.toolbarHeight,
   });
 
@@ -17,6 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool canBack;
   final List<Widget>? actions;
   final PreferredSizeWidget? bottom;
+  final Widget? titleWidget;
   final double? toolbarHeight;
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         title,
         textAlign: TextAlign.center,
         style: AppTextStyle.style16Bold.copyWith(
-          color: AppColors.primaryDarkColor,
+          color: AppColors.blackColor.withAlpha(200),
         ),
       ),
       shape: RoundedRectangleBorder(

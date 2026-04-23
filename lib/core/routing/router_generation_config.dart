@@ -1,52 +1,116 @@
+// ignore_for_file: cast_nullable_to_non_nullable
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sales_tracker/features/admin_home/presentation/controller/admin_home_cubit.dart';
-import 'package:sales_tracker/features/admin_home/presentation/view/admin_home_screen.dart';
-import 'package:sales_tracker/features/auth/presentation/controllers/auth_cubit.dart';
-import 'package:sales_tracker/features/clients/data/model/client_model.dart';
-import 'package:sales_tracker/features/clients/presentation/controller/client_cubit.dart';
-import 'package:sales_tracker/features/clients/presentation/view/add_clients_screen.dart';
-import 'package:sales_tracker/features/clients/presentation/view/all_clients_screen.dart';
-import 'package:sales_tracker/features/clients/presentation/view/clients_details_screen.dart';
-import 'package:sales_tracker/features/clients/presentation/view/clients_screen.dart';
-import 'package:sales_tracker/features/home/presentation/controller/rep_home_cubit.dart';
-import 'package:sales_tracker/features/home/presentation/view/home_screen.dart';
-import 'package:sales_tracker/features/profile/presentation/controller/profile_cubit.dart';
-import 'package:sales_tracker/features/profile/presentation/view/edit_profile_screen.dart';
-import 'package:sales_tracker/features/representative/data/model/single_rep_model.dart';
-import 'package:sales_tracker/features/representative/presentation/controller/rep_cubit.dart';
-import 'package:sales_tracker/features/representative/presentation/view/create_rep_screen.dart';
-import 'package:sales_tracker/features/representative/presentation/view/rep_details_screen.dart';
-import 'package:sales_tracker/features/representative/presentation/view/rep_screen.dart';
-import 'package:sales_tracker/features/visits/data/model/visits_model.dart';
-import 'package:sales_tracker/features/visits/presentation/controller/visits_cubit.dart';
-import 'package:sales_tracker/features/visits/presentation/view/add_visits_screen.dart';
-import 'package:sales_tracker/features/visits/presentation/view/all_visits_screen.dart';
-import 'package:sales_tracker/features/visits/presentation/view/visit_screen.dart';
-import 'package:sales_tracker/features/visits/presentation/view/visits_details_screen.dart';
+import 'package:sit/core/constants.dart';
+import 'package:sit/core/di.dart';
+import 'package:sit/core/routing/app_routes.dart';
 
-import '../../core/constants.dart';
-import '../../core/di.dart';
-import '../../core/routing/app_routes.dart';
-import '../../features/auth/presentation/views/login_screen.dart';
-// import '../../features/intro/onboarding/cubit/onboarding_cubit.dart';
-// import '../../features/intro/onboarding/onboarding_screen.dart';
-import '../../features/intro/splash/splash_view.dart';
-import '../../features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
-import '../../features/main_layout/presentation/views/main_layout_view.dart';
+import 'package:sit/features/intro/onboarding/cubit/onboarding_cubit.dart';
+import 'package:sit/features/intro/onboarding/onboarding_screen.dart';
+import 'package:sit/features/intro/splash/splash_view.dart';
+import 'package:sit/features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
+import 'package:sit/features/main_layout/presentation/views/main_layout_view.dart';
+import 'package:sit/features/main_layout/presentation/views/tabs/home/presentation/controllers/service_bloc.dart';
+import 'package:sit/features/main_layout/presentation/views/tabs/home/presentation/views/request_service_view.dart';
+import 'package:sit/features/main_layout/presentation/views/tabs/services/cubit/service_detail_cubit.dart';
+import 'package:sit/features/main_layout/presentation/views/tabs/services/views/service_detail_view.dart';
+import 'package:sit/features/sales_features/admin_home/presentation/controller/admin_home_cubit.dart';
+import 'package:sit/features/sales_features/admin_home/presentation/view/admin_home_screen.dart';
+import 'package:sit/features/sales_features/auth/presentation/controllers/auth_cubit.dart';
+import 'package:sit/features/sales_features/auth/presentation/views/login_screen.dart';
+import 'package:sit/features/sales_features/clients/data/model/client_model.dart';
+import 'package:sit/features/sales_features/clients/presentation/controller/client_cubit.dart';
+import 'package:sit/features/sales_features/clients/presentation/view/add_clients_screen.dart';
+import 'package:sit/features/sales_features/clients/presentation/view/all_clients_screen.dart';
+import 'package:sit/features/sales_features/clients/presentation/view/clients_details_screen.dart';
+import 'package:sit/features/sales_features/clients/presentation/view/clients_screen.dart';
+import 'package:sit/features/sales_features/home/presentation/controller/rep_home_cubit.dart';
+import 'package:sit/features/sales_features/home/presentation/view/home_screen.dart';
+import 'package:sit/features/sales_features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
+import 'package:sit/features/sales_features/main_layout/presentation/views/main_layout_view.dart';
+import 'package:sit/features/sales_features/profile/presentation/controller/profile_cubit.dart';
+import 'package:sit/features/sales_features/profile/presentation/view/edit_profile_screen.dart';
+import 'package:sit/features/sales_features/representative/data/model/single_rep_model.dart';
+import 'package:sit/features/sales_features/representative/presentation/controller/rep_cubit.dart';
+import 'package:sit/features/sales_features/representative/presentation/view/create_rep_screen.dart';
+import 'package:sit/features/sales_features/representative/presentation/view/rep_details_screen.dart';
+import 'package:sit/features/sales_features/representative/presentation/view/rep_screen.dart';
+import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
+import 'package:sit/features/sales_features/visits/presentation/controller/visits_cubit.dart';
+import 'package:sit/features/sales_features/visits/presentation/view/add_visits_screen.dart';
+import 'package:sit/features/sales_features/visits/presentation/view/all_visits_screen.dart';
+import 'package:sit/features/sales_features/visits/presentation/view/visit_screen.dart';
+import 'package:sit/features/sales_features/visits/presentation/view/visits_details_screen.dart';
 
 class RouterGenerationConfig {
   static GoRouter goRouter = GoRouter(
     navigatorKey: navigatorKey,
     initialLocation: AppRoutes.splashScreen,
     routes: [
-      /// ------------------ < Intro Routes > ------------------
       GoRoute(
         path: AppRoutes.splashScreen,
         name: AppRoutes.splashScreen,
         builder: (context, state) => const SplashView(),
       ),
+      GoRoute(
+        path: AppRoutes.onBoardingScreen,
+        name: AppRoutes.onBoardingScreen,
+        builder: (context, state) => BlocProvider<OnboardingCubit>(
+          create: (context) => OnboardingCubit(),
+          child: const OnBoardingScreen(),
+        ),
+      ),
 
+      GoRoute(
+        path: AppRoutes.mainlayout,
+        name: AppRoutes.mainlayout,
+        builder: (context, state) => BlocProvider<MainLayoutCubit>(
+          create: (context) => MainLayoutCubit(),
+          child: const MainLayoutView(),
+        ),
+      ),
+     
+      
+      
+      GoRoute(
+        path: AppRoutes.serviceDetailView,
+        name: AppRoutes.serviceDetailView,
+        builder: (context, state) {
+          final id = state.extra! as int;
+          return BlocProvider<ServiceDetailCubit>(
+            create: (context) => getIt<ServiceDetailCubit>(),
+            child: ServiceDetailView(serviceId: id),
+          );
+        },
+      ),
+
+      /// ------------- < >  -------------
+      // GoRoute(
+      //     path: AppRoutes.allCoursesScreen,
+      //     name: AppRoutes.allCoursesScreen,
+      //     builder: (context, state) {
+      //       final args = state.extra! as Map<String, dynamic>;
+      //       final title = args['title'] as String;
+      //       final subject = args['items'] as List<Course>;
+      //       final subscriptions = args['subscriptions'] as List<Subscription>;
+      //       final currencySymbol = args['currencySymbol'] as String?;
+      //       return BlocProvider<CartBloc>.value(
+      //         value: getIt<CartBloc>(),
+      //         child: AllContentScreen(
+      //           items: subject,
+      //           title: title,
+      //           subscriptions: subscriptions,
+      //           currencySymbol: currencySymbol,
+      //         ),
+      //       );
+      //     },
+      //   ),
+      //  GoRoute(
+      //   path: AppRoutes.splashScreen,
+      //   name: AppRoutes.splashScreen,
+      //   builder: (context, state) => const SplashView(),
+      // ),
       GoRoute(
         path: AppRoutes.homeScreen,
         name: AppRoutes.homeScreen,
@@ -268,7 +332,7 @@ class RouterGenerationConfig {
       // GoRoute(
       //   path: AppRoutes.onBoardingScreen,
       //   name: AppRoutes.onBoardingScreen,
-      //   builder: (context, state) => BlocProvider<OnboardingCubit>(  
+      //   builder: (context, state) => BlocProvider<OnboardingCubit>(
       //     create: (context) => getIt<OnboardingCubit>(),
       //     child: const OnBoardingScreen(),
       //   ),
@@ -276,12 +340,25 @@ class RouterGenerationConfig {
 
       /// ------------------ < Main Layout Route > ------------------
       GoRoute(
-        path: AppRoutes.mainLayoutScreen,
-        name: AppRoutes.mainLayoutScreen,
-        builder: (context, state) => BlocProvider<MainLayoutCubit>.value(
-          value: getIt<MainLayoutCubit>(),
-          child: const MainLayoutView(),
+        path: AppRoutes.salesMainLayoutScreen,
+        name: AppRoutes.salesMainLayoutScreen,
+        builder: (context, state) => BlocProvider<SalesMainLayoutCubit>.value(
+          value: getIt<SalesMainLayoutCubit>(),
+          child: const SalesMainLayoutView(),
         ),
+      ),
+      GoRoute(
+        path: AppRoutes.requestServiceView,
+        name: AppRoutes.requestServiceView,
+        builder: (context, state) {
+          final projectQuestions = state.extra! as List<String>;
+          return BlocProvider<ServiceBloc>.value(
+            value: getIt<ServiceBloc>(),
+            child: RequestServiceView(
+              projectQuestions: projectQuestions,
+            ),
+          );
+        },
       ),
 
       /// ------------------ < Auth Routes > ------------------
@@ -302,68 +379,6 @@ class RouterGenerationConfig {
           );
         },
       ),
-      // GoRoute(
-      //   path: AppRoutes.registerScreen,
-      //   name: AppRoutes.registerScreen,
-      //   builder: (context, state) => BlocProvider<AuthBloc>.value(
-      //     value: getIt<AuthBloc>(),
-      //     child: const RegisterScreen(),
-      //   ),
-      // ),
-      // GoRoute(
-      //   path: AppRoutes.forgotPasswordScreen,
-      //   name: AppRoutes.forgotPasswordScreen,
-      //   builder: (context, state) => BlocProvider<AuthBloc>.value(
-      //     value: getIt<AuthBloc>(),
-      //     child: const ForgotPasswordScreen(),
-      //   ),
-      // ),
-      // GoRoute(
-      //   path: AppRoutes.resetPasswordScreen,
-      //   name: AppRoutes.resetPasswordScreen,
-      //   builder: (context, state) {
-      //     final email = state.extra! as String;
-
-      //     return BlocProvider<AuthBloc>.value(
-      //       value: getIt<AuthBloc>(),
-      //       child: ResetPasswordScreen(email: email),
-      //     );
-      //   },
-      // ),
-      // GoRoute(
-      //   path: AppRoutes.verificationScreen,
-      //   name: AppRoutes.verificationScreen,
-      //   builder: (context, state) {
-      //     final email = state.extra! as String;
-
-      //     return BlocProvider<AuthBloc>.value(
-      //       value: getIt<AuthBloc>(),
-      //       child: VerificationScreen(email: email),
-      //     );
-      //   },
-      // ),
-
-      /// ------------- < >  -------------
-      // GoRoute(
-      //     path: AppRoutes.allCoursesScreen,
-      //     name: AppRoutes.allCoursesScreen,
-      //     builder: (context, state) {
-      //       final args = state.extra! as Map<String, dynamic>;
-      //       final title = args['title'] as String;
-      //       final subject = args['items'] as List<Course>;
-      //       final subscriptions = args['subscriptions'] as List<Subscription>;
-      //       final currencySymbol = args['currencySymbol'] as String?;
-      //       return BlocProvider<CartBloc>.value(
-      //         value: getIt<CartBloc>(),
-      //         child: AllContentScreen(
-      //           items: subject,
-      //           title: title,
-      //           subscriptions: subscriptions,
-      //           currencySymbol: currencySymbol,
-      //         ),
-      //       );
-      //     },
-      //   ),
     ],
   );
 }

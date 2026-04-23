@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../responsive/responsive_config.dart';
-import '../shared_widgets/custom_primary_textfield.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_text_style.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/shared_widgets/custom_primary_textfield.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 
 class CustomDropdownButtonFormField<T> extends StatelessWidget {
   const CustomDropdownButtonFormField({

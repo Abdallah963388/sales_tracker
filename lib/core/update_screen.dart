@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:sales_tracker/core/debug_print_widget.dart';
-import 'package:sales_tracker/core/responsive/responsive_config.dart';
-import 'package:sales_tracker/core/theme/app_text_style.dart';
+import 'package:sit/core/debug_print_widget.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateScreen extends StatelessWidget {

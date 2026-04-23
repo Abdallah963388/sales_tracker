@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../responsive/responsive_config.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_text_style.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 
 class CustomPrimaryTextfield extends StatelessWidget {
   const CustomPrimaryTextfield({
@@ -58,11 +57,13 @@ class CustomPrimaryTextfield extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.zero,
-          child: Text(title ?? '', style: AppTextStyle.style14W800),
-        ),
-        5.verticalSpace,
+        if (title != null) ...[
+          Padding(
+            padding: EdgeInsets.zero,
+            child: Text(title ?? '', style: AppTextStyle.style14W800),
+          ),
+          5.verticalSpace,
+        ],
         SizedBox(
           // height: 52.h,
           child: TextFormField(
@@ -84,7 +85,7 @@ class CustomPrimaryTextfield extends StatelessWidget {
             controller: controller,
             cursorWidth: 0.5,
             cursorColor: AppColors.primaryColor,
-            obscureText: isPassword ?? false ? (obscureText ?? true) : false,
+            obscureText: (isPassword ?? false) && (obscureText ?? true),
             decoration: InputDecoration(
               hint: Text(
                 text ?? '',

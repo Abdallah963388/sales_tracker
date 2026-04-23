@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-
-import '../cache_helper/cache_helper.dart';
-import '../cache_helper/cache_values.dart';
-import '../constants.dart';
-import '../routing/app_routes.dart';
+import 'package:sit/core/cache_helper/cache_helper.dart';
+import 'package:sit/core/cache_helper/cache_values.dart';
+import 'package:sit/core/constants.dart';
+import 'package:sit/core/routing/app_routes.dart';
 
 class DioInterceptors {
   DioInterceptors(this.dio);
@@ -137,6 +136,7 @@ class AppErrorInterceptor extends Interceptor {
     handler.next(err);
   }
 }
+
 class AuthInterceptor extends Interceptor {
   @override
   Future<void> onRequest(

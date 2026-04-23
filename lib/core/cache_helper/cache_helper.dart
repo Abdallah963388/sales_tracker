@@ -1,15 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../cache_helper/cache_values.dart';
+import 'package:sit/core/cache_helper/cache_values.dart';
 
 class CacheHelper {
   CacheHelper._();
 
   static SharedPreferences? _sharedPreferences;
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-  // static late SharedPreferences sharedPreferences;
   static Future<void> init() async {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
@@ -30,10 +28,6 @@ class CacheHelper {
 
   static String getLanguage() {
     return get<String>(CacheKeys.currentLanguage) ?? 'ar';
-  }
-
-  static dynamic getData({required String key}) {
-    return _sharedPreferences?.get(key);
   }
 
   static bool isEnglish() => getLanguage() == 'en';

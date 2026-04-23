@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import '../constants.dart';
-import '../responsive/responsive_config.dart';
-import '../theme/app_colors.dart';
-import '../theme/app_text_style.dart';
+import 'package:sit/core/constants.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 
 class Appthemes {
   static ThemeData lightTheme() {

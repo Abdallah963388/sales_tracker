@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sales_tracker/core/responsive/responsive_config.dart';
-import 'package:sales_tracker/core/theme/app_colors.dart';
-import 'package:sales_tracker/core/theme/app_text_style.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/theme/app_colors.dart';
+import 'package:sit/core/theme/app_text_style.dart';
 
 class CustomDropdownField<T> extends StatelessWidget {
   const CustomDropdownField({

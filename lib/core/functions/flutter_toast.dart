@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../responsive/responsive_config.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
 
 void customToast({required String msg, required Color color, int? time}) =>
     Fluttertoast.showToast(

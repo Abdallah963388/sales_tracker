@@ -1,5 +1,7 @@
+
+
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:sales_tracker/core/debug_print_widget.dart';
+import 'package:sit/core/debug_print_widget.dart';
 
 Future<String> getBuildNumber() async {
   final info = await PackageInfo.fromPlatform();

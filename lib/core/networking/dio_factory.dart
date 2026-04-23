@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import '../networking/dio_interceptors.dart';
-import '../networking/end_points.dart';
+import 'dio_interceptors.dart';
+import 'end_points.dart';
 
 class DioFactory {
   Dio createDio() {

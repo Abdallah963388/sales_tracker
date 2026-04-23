@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:sit/core/localization/s.dart';
 
 String formatToTime(String? dateTimeString, String locale) {
   if (dateTimeString == null || dateTimeString.isEmpty) {
@@ -69,9 +70,9 @@ String getGreetingWithEmoji(BuildContext context) {
   final hour = DateTime.now().hour;
 
   if (hour >= 5 && hour < 12) {
-    return '${'صباح الخير'} 🌞';
+    return '${S.of(context)!.goodMorning} 🌞';
   } else {
-    return '${'مساء الخير'} 🌙';
+    return '${S.of(context)!.goodEvening} 🌙';
   }
 }
 

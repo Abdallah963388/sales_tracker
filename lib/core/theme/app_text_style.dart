@@ -1,9 +1,8 @@
 // ignore_for_file: unreachable_switch_default
 
 import 'package:flutter/cupertino.dart';
-import 'package:sales_tracker/core/responsive/responsive_config.dart';
-
-import '../constants.dart';
+import 'package:sit/core/constants.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
 
 /// ===============================
 /// Font base sizes
@@ -19,7 +18,7 @@ const double size20 = 20;
 /// Font scale configuration
 /// ===============================
 class FontScaleConfig {
-  static double scale = 1.0;
+  static double scale = 1;
 }
 
 /// ===============================

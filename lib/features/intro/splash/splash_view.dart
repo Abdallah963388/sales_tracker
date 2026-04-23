@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sales_tracker/core/cache_helper/cache_helper.dart';
-import 'package:sales_tracker/core/cache_helper/cache_values.dart';
-
-import '/../core/resources/assets/app_images.dart';
-import '/../core/responsive/responsive_config.dart';
-import '/../core/routing/app_routes.dart';
+import 'package:sit/core/cache_helper/cache_helper.dart';
+import 'package:sit/core/cache_helper/cache_values.dart';
+import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/routing/app_routes.dart';
+import 'package:sit/core/theme/app_images.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -29,12 +28,11 @@ class _SplashViewState extends State<SplashView> {
     _hasRedirected = true;
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
-    final token = await CacheHelper.getSecured(CacheKeys.userToken);
-    final isLogin = token?.toString();
-    if (isLogin != null && isLogin.isNotEmpty) {
-      context.go(AppRoutes.mainLayoutScreen);
+    final hasSeenOnboarding = CacheHelper.get<bool>(CacheKeys.isFirstOpen);
+    if (hasSeenOnboarding == null) {
+      context.go(AppRoutes.onBoardingScreen);
     } else {
-      context.go(AppRoutes.loginScreen);
+      context.go(AppRoutes.mainlayout);
     }
   }
 
@@ -46,9 +44,10 @@ class _SplashViewState extends State<SplashView> {
         children: [
           Center(
             child: Image.asset(
-              AppImages.appLogo,
+              AppImages.salesAppLogo,
               fit: BoxFit.cover,
-              width: 200.w,
+              height: 190.h,
+              width: 190.w,
             ),
           ),
         ],
