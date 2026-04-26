@@ -26,18 +26,39 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>يُستخدم موقعك لتحسين وظائف التطبيق المتعلقة بالموقع أثناء الاستخدام. لا يتم تتبع موقعك أو مشاركته خارج التطبيق.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>يستخدم التطبيق موقعك أثناء استخدامه فقط لتحديد المواقع المتعلقة بالعمل وتحسين دقة البيانات. لا يتم استخدام الموقع للتتبع أو لأي أغراض أخرى.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>يتيح التطبيق للمستخدم اختيار صور من جهازه لإرفاقها داخل التطبيق فقط. لا يتم استخدام الصور لأي أغراض أخرى أو تتبع.</string>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>FlutterSceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
-		<key>NSPhotoLibraryUsageDescription</key>
-            <string>يتيح التطبيق للمستخدم اختيار صور من جهازه لإرفاقها داخل التطبيق فقط. لا يتم استخدام الصور لأي أغراض أخرى أو تتبع.</string>
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>يستخدم التطبيق موقعك أثناء استخدامه فقط لتحديد المواقع المتعلقة بالعمل وتحسين دقة البيانات. لا يتم استخدام الموقع للتتبع أو لأي أغراض أخرى.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-    <string>يُستخدم موقعك لتحسين وظائف التطبيق المتعلقة بالموقع أثناء الاستخدام. لا يتم تتبع موقعك أو مشاركته خارج التطبيق.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
