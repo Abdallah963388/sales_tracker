@@ -318,79 +318,77 @@ Widget _statCard({
   required BuildContext context,
   VoidCallback? onTap,
 }) {
-  return Expanded(
-    child: InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(16.r),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
-          color: AppColors.primaryColor,
-          // gradient: const LinearGradient(
-          //   colors: [
-          //     AppColors.primaryColor,
-          //     AppColors.forthColor,
-          //   ],
-          // ),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(12.r),
-              decoration: BoxDecoration(
-                color: Colors.white.withAlpha(51),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 40.r,
-              ),
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16.r),
+        color: AppColors.primaryColor,
+        // gradient: const LinearGradient(
+        //   colors: [
+        //     AppColors.primaryColor,
+        //     AppColors.forthColor,
+        //   ],
+        // ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(12.r),
+            decoration: BoxDecoration(
+              color: Colors.white.withAlpha(51),
+              shape: BoxShape.circle,
             ),
-            16.horizontalSpace,
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyle.style16Bold.copyWith(
-                      color: AppColors.scaffoldBackgroundLightColor,
-                    ),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 40.r,
+            ),
+          ),
+          16.horizontalSpace,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: AppTextStyle.style16Bold.copyWith(
+                    color: AppColors.scaffoldBackgroundLightColor,
                   ),
-                  4.verticalSpace,
-                  Text(
-                    subTitle,
-                    style: AppTextStyle.style14W500.copyWith(
-                      color: AppColors.scaffoldBackgroundLightColor.withAlpha(
-                        200,
-                      ),
-                      fontSize: 15.sp,
+                ),
+                4.verticalSpace,
+                Text(
+                  subTitle,
+                  style: AppTextStyle.style14W500.copyWith(
+                    color: AppColors.scaffoldBackgroundLightColor.withAlpha(
+                      200,
                     ),
+                    fontSize: 15.sp,
                   ),
-                  16.verticalSpace,
-                  Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.symmetric(vertical: 12.r),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteColor,
-                      borderRadius: BorderRadius.circular(15.r),
-                    ),
+                ),
+                16.verticalSpace,
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 12.r),
+                  decoration: BoxDecoration(
+                    color: AppColors.whiteColor,
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
 
-                    child: Text(
-                      S.of(context)!.enterServiceNow,
-                      textAlign: TextAlign.center,
-                      style: AppTextStyle.style14W900.copyWith(
-                        color: AppColors.thirdColor,
-                      ),
+                  child: Text(
+                    S.of(context)!.enterServiceNow,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyle.style14W900.copyWith(
+                      color: AppColors.thirdColor,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );
