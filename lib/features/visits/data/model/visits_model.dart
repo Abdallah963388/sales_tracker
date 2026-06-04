@@ -1,5 +1,5 @@
 
-import 'package:sit/features/sales_features/clients/data/model/client_model.dart';
+import 'package:sit/features/clients/data/model/client_model.dart';
 
 class VisitsResponse {
   VisitsResponse({this.status, this.message, this.data});

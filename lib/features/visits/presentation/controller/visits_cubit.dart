@@ -2,9 +2,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sit/core/services/loading.dart';
-import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
-import 'package:sit/features/sales_features/visits/data/repo/visits_repo.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_states.dart';
+import 'package:sit/features/visits/data/model/visits_model.dart';
+import 'package:sit/features/visits/data/repo/visits_repo.dart';
+import 'package:sit/features/visits/presentation/controller/visits_states.dart';
 
 
 class VisitsCubit extends Cubit<VisitState> {

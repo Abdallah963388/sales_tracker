@@ -16,11 +16,11 @@ import 'package:sit/core/services/loading.dart';
 import 'package:sit/core/shared_widgets/custom_app_bar.dart';
 import 'package:sit/core/theme/app_colors.dart';
 import 'package:sit/core/theme/app_text_style.dart';
-import 'package:sit/features/sales_features/admin_home/presentation/controller/admin_home_cubit.dart';
-import 'package:sit/features/sales_features/home/presentation/controller/rep_home_cubit.dart';
-import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_cubit.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_states.dart';
+import 'package:sit/features/admin_home/presentation/controller/admin_home_cubit.dart';
+import 'package:sit/features/home/presentation/controller/rep_home_cubit.dart';
+import 'package:sit/features/visits/data/model/visits_model.dart';
+import 'package:sit/features/visits/presentation/controller/visits_cubit.dart';
+import 'package:sit/features/visits/presentation/controller/visits_states.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class VisitsDetailsScreen extends StatefulWidget {

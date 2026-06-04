@@ -13,11 +13,11 @@ import 'package:sit/core/shared_widgets/custom_primary_button.dart';
 import 'package:sit/core/shared_widgets/custom_primary_textfield.dart';
 import 'package:sit/core/theme/app_colors.dart';
 import 'package:sit/core/theme/app_text_style.dart';
-import 'package:sit/features/sales_features/clients/data/model/client_model.dart';
-import 'package:sit/features/sales_features/clients/presentation/controller/client_cubit.dart';
-import 'package:sit/features/sales_features/clients/presentation/controller/client_state.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_cubit.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_states.dart';
+import 'package:sit/features/clients/data/model/client_model.dart';
+import 'package:sit/features/clients/presentation/controller/client_cubit.dart';
+import 'package:sit/features/clients/presentation/controller/client_state.dart';
+import 'package:sit/features/visits/presentation/controller/visits_cubit.dart';
+import 'package:sit/features/visits/presentation/controller/visits_states.dart';
 
 class AddVisitsScreen extends StatefulWidget {
   const AddVisitsScreen({super.key});

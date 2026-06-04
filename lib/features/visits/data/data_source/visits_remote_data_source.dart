@@ -5,9 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sit/core/networking/end_points.dart';
-import 'package:sit/features/sales_features/clients/data/model/client_visits_model.dart';
-import 'package:sit/features/sales_features/visits/data/model/single_visit_model.dart';
-import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
+import 'package:sit/features/clients/data/model/client_visits_model.dart';
+import 'package:sit/features/visits/data/model/single_visit_model.dart';
+import 'package:sit/features/visits/data/model/visits_model.dart';
 
 class VisitsRemoteDataSource {
   VisitsRemoteDataSource(this.dio);

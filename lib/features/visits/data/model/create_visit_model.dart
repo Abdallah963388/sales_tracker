@@ -1,5 +1,5 @@
 
-import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
+import 'package:sit/features/visits/data/model/visits_model.dart';
 
 class AddVisitResponseModel {
   AddVisitResponseModel({

@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:sit/core/constants.dart';
 import 'package:sit/core/localization/s.dart';
 import 'package:sit/core/networking/failures.dart';
-import 'package:sit/features/sales_features/visits/data/data_source/visits_remote_data_source.dart';
-import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
+import 'package:sit/features/visits/data/data_source/visits_remote_data_source.dart';
+import 'package:sit/features/visits/data/model/visits_model.dart';
 
 class VisitsRepo {
   VisitsRepo(this.remoteDataSource);
