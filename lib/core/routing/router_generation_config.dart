@@ -5,43 +5,36 @@ import 'package:go_router/go_router.dart';
 import 'package:sit/core/constants.dart';
 import 'package:sit/core/di.dart';
 import 'package:sit/core/routing/app_routes.dart';
-
+import 'package:sit/features/admin_home/presentation/controller/admin_home_cubit.dart';
+import 'package:sit/features/admin_home/presentation/view/admin_home_screen.dart';
+import 'package:sit/features/auth/presentation/controllers/auth_cubit.dart';
+import 'package:sit/features/auth/presentation/views/login_screen.dart';
+import 'package:sit/features/clients/data/model/client_model.dart';
+import 'package:sit/features/clients/presentation/controller/client_cubit.dart';
+import 'package:sit/features/clients/presentation/view/add_clients_screen.dart';
+import 'package:sit/features/clients/presentation/view/all_clients_screen.dart';
+import 'package:sit/features/clients/presentation/view/clients_details_screen.dart';
+import 'package:sit/features/clients/presentation/view/clients_screen.dart';
+import 'package:sit/features/home/presentation/controller/rep_home_cubit.dart';
+import 'package:sit/features/home/presentation/view/home_screen.dart';
 import 'package:sit/features/intro/onboarding/cubit/onboarding_cubit.dart';
 import 'package:sit/features/intro/onboarding/onboarding_screen.dart';
 import 'package:sit/features/intro/splash/splash_view.dart';
 import 'package:sit/features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
 import 'package:sit/features/main_layout/presentation/views/main_layout_view.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/home/presentation/controllers/service_bloc.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/home/presentation/views/request_service_view.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/services/cubit/service_detail_cubit.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/services/views/service_detail_view.dart';
-import 'package:sit/features/sales_features/admin_home/presentation/controller/admin_home_cubit.dart';
-import 'package:sit/features/sales_features/admin_home/presentation/view/admin_home_screen.dart';
-import 'package:sit/features/sales_features/auth/presentation/controllers/auth_cubit.dart';
-import 'package:sit/features/sales_features/auth/presentation/views/login_screen.dart';
-import 'package:sit/features/sales_features/clients/data/model/client_model.dart';
-import 'package:sit/features/sales_features/clients/presentation/controller/client_cubit.dart';
-import 'package:sit/features/sales_features/clients/presentation/view/add_clients_screen.dart';
-import 'package:sit/features/sales_features/clients/presentation/view/all_clients_screen.dart';
-import 'package:sit/features/sales_features/clients/presentation/view/clients_details_screen.dart';
-import 'package:sit/features/sales_features/clients/presentation/view/clients_screen.dart';
-import 'package:sit/features/sales_features/home/presentation/controller/rep_home_cubit.dart';
-import 'package:sit/features/sales_features/home/presentation/view/home_screen.dart';
-import 'package:sit/features/sales_features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
-import 'package:sit/features/sales_features/main_layout/presentation/views/main_layout_view.dart';
-import 'package:sit/features/sales_features/profile/presentation/controller/profile_cubit.dart';
-import 'package:sit/features/sales_features/profile/presentation/view/edit_profile_screen.dart';
-import 'package:sit/features/sales_features/representative/data/model/single_rep_model.dart';
-import 'package:sit/features/sales_features/representative/presentation/controller/rep_cubit.dart';
-import 'package:sit/features/sales_features/representative/presentation/view/create_rep_screen.dart';
-import 'package:sit/features/sales_features/representative/presentation/view/rep_details_screen.dart';
-import 'package:sit/features/sales_features/representative/presentation/view/rep_screen.dart';
-import 'package:sit/features/sales_features/visits/data/model/visits_model.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_cubit.dart';
-import 'package:sit/features/sales_features/visits/presentation/view/add_visits_screen.dart';
-import 'package:sit/features/sales_features/visits/presentation/view/all_visits_screen.dart';
-import 'package:sit/features/sales_features/visits/presentation/view/visit_screen.dart';
-import 'package:sit/features/sales_features/visits/presentation/view/visits_details_screen.dart';
+import 'package:sit/features/profile/presentation/controller/profile_cubit.dart';
+import 'package:sit/features/profile/presentation/view/edit_profile_screen.dart';
+import 'package:sit/features/representative/data/model/single_rep_model.dart';
+import 'package:sit/features/representative/presentation/controller/rep_cubit.dart';
+import 'package:sit/features/representative/presentation/view/create_rep_screen.dart';
+import 'package:sit/features/representative/presentation/view/rep_details_screen.dart';
+import 'package:sit/features/representative/presentation/view/rep_screen.dart';
+import 'package:sit/features/visits/data/model/visits_model.dart';
+import 'package:sit/features/visits/presentation/controller/visits_cubit.dart';
+import 'package:sit/features/visits/presentation/view/add_visits_screen.dart';
+import 'package:sit/features/visits/presentation/view/all_visits_screen.dart';
+import 'package:sit/features/visits/presentation/view/visit_screen.dart';
+import 'package:sit/features/visits/presentation/view/visits_details_screen.dart';
 
 class RouterGenerationConfig {
   static GoRouter goRouter = GoRouter(
@@ -62,28 +55,26 @@ class RouterGenerationConfig {
         ),
       ),
 
-      GoRoute(
-        path: AppRoutes.mainlayout,
-        name: AppRoutes.mainlayout,
-        builder: (context, state) => BlocProvider<MainLayoutCubit>(
-          create: (context) => MainLayoutCubit(),
-          child: const MainLayoutView(),
-        ),
-      ),
-     
-      
-      
-      GoRoute(
-        path: AppRoutes.serviceDetailView,
-        name: AppRoutes.serviceDetailView,
-        builder: (context, state) {
-          final id = state.extra! as int;
-          return BlocProvider<ServiceDetailCubit>(
-            create: (context) => getIt<ServiceDetailCubit>(),
-            child: ServiceDetailView(serviceId: id),
-          );
-        },
-      ),
+      // GoRoute(
+      //   path: AppRoutes.mainlayout,
+      //   name: AppRoutes.mainlayout,
+      //   builder: (context, state) => BlocProvider<SalesMainLayoutCubit>(
+      //     create: (context) => SalesMainLayoutCubit(),
+      //     child: const SalesMainLayoutView(),
+      //   ),
+      // ),
+
+      // GoRoute(
+      //   path: AppRoutes.serviceDetailView,
+      //   name: AppRoutes.serviceDetailView,
+      //   builder: (context, state) {
+      //     final id = state.extra! as int;
+      //     return BlocProvider<ServiceDetailCubit>(
+      //       create: (context) => getIt<ServiceDetailCubit>(),
+      //       child: ServiceDetailView(serviceId: id),
+      //     );
+      //   },
+      // ),
 
       /// ------------- < >  -------------
       // GoRoute(
@@ -347,19 +338,19 @@ class RouterGenerationConfig {
           child: const SalesMainLayoutView(),
         ),
       ),
-      GoRoute(
-        path: AppRoutes.requestServiceView,
-        name: AppRoutes.requestServiceView,
-        builder: (context, state) {
-          final projectQuestions = state.extra! as List<String>;
-          return BlocProvider<ServiceBloc>.value(
-            value: getIt<ServiceBloc>(),
-            child: RequestServiceView(
-              projectQuestions: projectQuestions,
-            ),
-          );
-        },
-      ),
+      // GoRoute(
+      //   path: AppRoutes.requestServiceView,
+      //   name: AppRoutes.requestServiceView,
+      //   builder: (context, state) {
+      //     final projectQuestions = state.extra! as List<String>;
+      //     return BlocProvider<ServiceBloc>.value(
+      //       value: getIt<ServiceBloc>(),
+      //       child: RequestServiceView(
+      //         projectQuestions: projectQuestions,
+      //       ),
+      //     );
+      //   },
+      // ),
 
       /// ------------------ < Auth Routes > ------------------
       GoRoute(
@@ -371,9 +362,9 @@ class RouterGenerationConfig {
               BlocProvider.value(
                 value: getIt<LoginCubit>(),
               ),
-              BlocProvider.value(
-                value: getIt<MainLayoutCubit>(),
-              ),
+              // BlocProvider.value(
+              //   value: getIt<SalesMainLayoutCubit>(),
+              // ),
             ],
             child: const LogInScreen(),
           );

@@ -28,16 +28,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: toolbarHeight,
       elevation: 0,
       backgroundColor: AppColors.whiteColor,
-      leading: canBack
-          ? IconButton(
-              icon: Icon(
-                size: SizeConfig.responsiveValue(phone: 16.sp, tablet: 24.sp),
-                Icons.arrow_back_ios_new,
-                color: AppColors.primaryDarkColor,
-              ),
-              onPressed: () => Navigator.of(context).pop(),
-            )
-          : const SizedBox(),
+    
       title: Text(
         title,
         textAlign: TextAlign.center,

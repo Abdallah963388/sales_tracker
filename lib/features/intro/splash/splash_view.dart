@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sit/core/cache_helper/cache_helper.dart';
+import 'package:sit/core/cache_helper/cache_values.dart';
 import 'package:sit/core/responsive/responsive_config.dart';
 import 'package:sit/core/routing/app_routes.dart';
 import 'package:sit/core/theme/app_images.dart';
@@ -26,12 +28,12 @@ class _SplashViewState extends State<SplashView> {
     _hasRedirected = true;
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
-    // final hasSeenOnboarding = CacheHelper.get<bool>(CacheKeys.isFirstOpen);
-    // if (hasSeenOnboarding == null) {
-    //   context.go(AppRoutes.onBoardingScreen);
-    // } else
-    {
-      context.go(AppRoutes.mainlayout);
+    final token = await CacheHelper.getSecured(CacheKeys.userToken);
+    final isLogin = token?.toString();
+    if (isLogin != null && isLogin.isNotEmpty) {
+      await context.pushNamed(AppRoutes.salesMainLayoutScreen);
+    } else {
+      await context.pushNamed(AppRoutes.loginScreen);
     }
   }
 
@@ -45,8 +47,7 @@ class _SplashViewState extends State<SplashView> {
             child: Image.asset(
               AppImages.salesAppLogo,
               fit: BoxFit.cover,
-              height: 190.h,
-              width: 190.w,
+              width: 200.w,
             ),
           ),
         ],

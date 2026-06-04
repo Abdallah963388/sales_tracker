@@ -242,5 +242,7 @@
   "requestSentSuccess": "Your request has been sent successfully.\nWe will contact you soon.",
   "messageSendFailed": "Failed to send the message\nYou can contact support",
   "serverUnderMaintenanceMessage": "We are currently performing some server updates to improve the service.\nPlease try again later.",
-  "enterServiceNow":"Enter Service Now"
+  "enterServiceNow":"Enter Service Now",
+  "salesTracker":"Sales Tracker"
+  
 }

@@ -952,7 +952,7 @@ abstract class S {
   /// No description provided for @salesTracker.
   ///
   /// In en, this message translates to:
-  /// **'Sales Tracker service'**
+  /// **'Sales Tracker'**
   String get salesTracker;
 
   /// No description provided for @salesTrackerDescription.

@@ -1,14 +1,15 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:sit/core/shared_controllers/safe_cubit.dart';
 import 'package:sit/features/main_layout/data/models/tab_item_model.dart';
+
 
 part 'main_layout_state.dart';
 
-class MainLayoutCubit extends Cubit<MainLayoutState> {
-  MainLayoutCubit()
+class SalesMainLayoutCubit extends SafeCubit<SalesMainLayoutState> {
+  SalesMainLayoutCubit()
     : super(
-        const MainLayoutState(
+        const SalesMainLayoutState(
           currentIndex: 0,
           tabs: [],
         ),
@@ -18,21 +19,27 @@ class MainLayoutCubit extends Cubit<MainLayoutState> {
     emit(state.copyWith(tabs: tabs));
   }
 
-  Future<void> goToPage(int index, PageController? controller) async {
+  int backPressCount = 0;
+
+  void resetBackPress() {
+    backPressCount = 0;
+  }
+
+  PageController? controller;
+  Future<void> gotoPage(int index) async {
     if (index == state.currentIndex) return;
+    resetBackPress();
+
     emit(state.copyWith(currentIndex: index));
 
-    if (controller != null && controller.hasClients) {
-      await controller.animateToPage(
-        index,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
+    if (controller != null && controller!.hasClients) {
+      controller!.jumpToPage(index);
     }
   }
 
-  void onPageChanged(int index) {
-    if (index == state.currentIndex) return;
-    emit(state.copyWith(currentIndex: index));
+  void reset() {
+    backPressCount = 0;
+    controller = PageController(initialPage: 0);
+    emit(const SalesMainLayoutState(currentIndex: 0, tabs: []));
   }
 }

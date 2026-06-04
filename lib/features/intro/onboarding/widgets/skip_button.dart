@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sit/core/cache_helper/cache_helper.dart';
 import 'package:sit/core/cache_helper/cache_values.dart';
 import 'package:sit/core/localization/s.dart';
 import 'package:sit/core/responsive/responsive_config.dart';
+import 'package:sit/core/routing/app_routes.dart';
+// import '/../core/routing/app_routes.dart';
 import 'package:sit/core/theme/app_colors.dart';
 import 'package:sit/core/theme/app_text_style.dart';
 
@@ -11,13 +14,13 @@ class SkipButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
-      child: GestureDetector(
-        onTap: () {
-          // context.pushReplacementNamed(Routes.loginScreen);
-          CacheHelper.set(CacheKeys.isFirstOpen, true);
-        },
+    return GestureDetector(
+      onTap: () {
+        context.pushReplacementNamed(AppRoutes.loginScreen);
+        CacheHelper.set(CacheKeys.isFirstOpen, true);
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
         child: Align(
           alignment: Alignment.topRight,
           child: Text(

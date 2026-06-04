@@ -450,7 +450,7 @@ class SEn extends S {
   String get reps => 'Representatives';
 
   @override
-  String get salesTracker => 'Sales Tracker service';
+  String get salesTracker => 'Sales Tracker';
 
   @override
   String get salesTrackerDescription =>

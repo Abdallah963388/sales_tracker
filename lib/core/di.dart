@@ -3,38 +3,31 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sit/core/networking/dio_factory.dart';
-
-import 'package:sit/features/intro/onboarding/cubit/onboarding_cubit.dart';
+import 'package:sit/features/admin_home/data/data_source/admin_home_remote_data_source.dart';
+import 'package:sit/features/admin_home/data/repo/admin_home_repo.dart';
+import 'package:sit/features/admin_home/presentation/controller/admin_home_cubit.dart';
+import 'package:sit/features/auth/data/datasourse/auth_remote_datasource.dart';
+import 'package:sit/features/auth/data/repo/auth_repo.dart';
+import 'package:sit/features/auth/presentation/controllers/auth_cubit.dart';
+import 'package:sit/features/clients/data/data_source/clients_remote_data_source.dart';
+import 'package:sit/features/clients/data/data_source/local_data_source.dart';
+import 'package:sit/features/clients/data/repo/client_repo.dart';
+import 'package:sit/features/clients/presentation/controller/client_cubit.dart';
+import 'package:sit/features/home/data/data_source/rep_home_remote_data_source.dart';
+import 'package:sit/features/home/data/repo/rep_home_repo.dart';
+import 'package:sit/features/home/presentation/controller/rep_home_cubit.dart';
 import 'package:sit/features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/home/data/datasourses/service_remote_data_source.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/home/domain/repository/service_repository.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/home/presentation/controllers/service_bloc.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/services/cubit/service_detail_cubit.dart';
-import 'package:sit/features/sales_features/admin_home/data/data_source/admin_home_remote_data_source.dart';
-import 'package:sit/features/sales_features/admin_home/data/repo/admin_home_repo.dart';
-import 'package:sit/features/sales_features/admin_home/presentation/controller/admin_home_cubit.dart';
-import 'package:sit/features/sales_features/auth/data/datasourse/auth_remote_datasource.dart';
-import 'package:sit/features/sales_features/auth/data/repo/auth_repo.dart';
-import 'package:sit/features/sales_features/auth/presentation/controllers/auth_cubit.dart';
-import 'package:sit/features/sales_features/clients/data/data_source/clients_remote_data_source.dart';
-import 'package:sit/features/sales_features/clients/data/data_source/local_data_source.dart';
-import 'package:sit/features/sales_features/clients/data/repo/client_repo.dart';
-import 'package:sit/features/sales_features/clients/presentation/controller/client_cubit.dart';
-import 'package:sit/features/sales_features/home/data/data_source/rep_home_remote_data_source.dart';
-import 'package:sit/features/sales_features/home/data/repo/rep_home_repo.dart';
-import 'package:sit/features/sales_features/home/presentation/controller/rep_home_cubit.dart';
-import 'package:sit/features/sales_features/main_layout/presentation/controllers/cubit/main_layout_cubit.dart';
-import 'package:sit/features/sales_features/my_app/controller/localization_cubit/localization_cubit.dart';
-import 'package:sit/features/sales_features/my_app/maintenance/cubit/maintenance_cubit.dart';
-import 'package:sit/features/sales_features/profile/data/data_source/profile_remote_data_source.dart';
-import 'package:sit/features/sales_features/profile/data/repo/profile_repo.dart';
-import 'package:sit/features/sales_features/profile/presentation/controller/profile_cubit.dart';
-import 'package:sit/features/sales_features/representative/data/data_source/rep_remote_data_source.dart';
-import 'package:sit/features/sales_features/representative/data/repo/rep_repo.dart';
-import 'package:sit/features/sales_features/representative/presentation/controller/rep_cubit.dart';
-import 'package:sit/features/sales_features/visits/data/data_source/visits_remote_data_source.dart';
-import 'package:sit/features/sales_features/visits/data/repo/visits_repo.dart';
-import 'package:sit/features/sales_features/visits/presentation/controller/visits_cubit.dart';
+import 'package:sit/features/my_app/controller/localization_cubit/localization_cubit.dart';
+import 'package:sit/features/my_app/maintenance/cubit/maintenance_cubit.dart';
+import 'package:sit/features/profile/data/data_source/profile_remote_data_source.dart';
+import 'package:sit/features/profile/data/repo/profile_repo.dart';
+import 'package:sit/features/profile/presentation/controller/profile_cubit.dart';
+import 'package:sit/features/representative/data/data_source/rep_remote_data_source.dart';
+import 'package:sit/features/representative/data/repo/rep_repo.dart';
+import 'package:sit/features/representative/presentation/controller/rep_cubit.dart';
+import 'package:sit/features/visits/data/data_source/visits_remote_data_source.dart';
+import 'package:sit/features/visits/data/repo/visits_repo.dart';
+import 'package:sit/features/visits/presentation/controller/visits_cubit.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -45,18 +38,18 @@ Future<void> setupGetIt() async {
     })
     ..registerLazySingleton<Dio>(() => getIt<DioFactory>().createDio())
     ..registerLazySingleton<LocalizationCubit>(LocalizationCubit.new)
-    ..registerLazySingleton<ServiceRemoteDataSource>(
-      () => ServiceRemoteDataSourceImpl(dio: getIt()),
-    )
-    ..registerLazySingleton<ServiceRepository>(
-      () => ServiceRepositoryImpl(remoteDataSource: getIt()),
-    )
-    ..registerFactory<ServiceDetailCubit>(
-      () => ServiceDetailCubit(repository: getIt()),
-    )
-    ..registerLazySingleton<ServiceBloc>(
-      () => ServiceBloc(repository: getIt()),
-    )
+    // ..registerLazySingleton<ServiceRemoteDataSource>(
+    //   () => ServiceRemoteDataSourceImpl(dio: getIt()),
+    // )
+    // ..registerLazySingleton<ServiceRepository>(
+    //   () => ServiceRepositoryImpl(remoteDataSource: getIt()),
+    // )
+    // ..registerFactory<ServiceDetailCubit>(
+    //   () => ServiceDetailCubit(repository: getIt()),
+    // )
+    // ..registerLazySingleton<ServiceBloc>(
+    //   () => ServiceBloc(repository: getIt()),
+    // )
     // ------------------------------------------------ //
     //               Sales Tracker
     // Local & Remote Data Sources
@@ -105,9 +98,8 @@ Future<void> setupGetIt() async {
     //   () => ClientCubit(getIt<LocalDataSource>()),
     // )
     ..registerLazySingleton<MaintenanceCubit>(() => MaintenanceCubit(getIt()))
-    ..registerLazySingleton<OnboardingCubit>(OnboardingCubit.new)
+    // ..registerLazySingleton<OnboardingCubit>(OnboardingCubit.new)
     ..registerLazySingleton<SalesMainLayoutCubit>(SalesMainLayoutCubit.new)
-    ..registerLazySingleton<MainLayoutCubit>(MainLayoutCubit.new)
     ..registerLazySingleton<LoginCubit>(() => LoginCubit(getIt()))
     ..registerLazySingleton<RepHomeCubit>(() => RepHomeCubit(getIt()))
     ..registerLazySingleton<ClientCubit>(() => ClientCubit(getIt(), getIt()))

@@ -1,18 +1,18 @@
 part of 'main_layout_cubit.dart';
 
-class MainLayoutState extends Equatable {
-  const MainLayoutState({
+class SalesMainLayoutState extends Equatable {
+  const SalesMainLayoutState({
     required this.currentIndex,
     required this.tabs,
   });
   final int currentIndex;
   final List<TabItemModel> tabs;
 
-  MainLayoutState copyWith({
+  SalesMainLayoutState copyWith({
     int? currentIndex,
     List<TabItemModel>? tabs,
   }) {
-    return MainLayoutState(
+    return SalesMainLayoutState(
       currentIndex: currentIndex ?? this.currentIndex,
       tabs: tabs ?? this.tabs,
     );

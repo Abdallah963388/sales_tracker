@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:sit/core/di.dart';
 import 'package:sit/core/functions/config_loading.dart';
-import 'package:sit/core/localization/s.dart';
-import 'package:sit/core/responsive/responsive_config.dart';
-import 'package:sit/core/routing/router_generation_config.dart';
-import 'package:sit/core/theme/app_themes.dart';
-import 'package:sit/features/main_layout/presentation/views/tabs/home/presentation/controllers/service_bloc.dart';
-import 'package:sit/features/sales_features/my_app/controller/localization_cubit/localization_cubit.dart';
+
+import '/../core/di.dart';
+import '/../core/localization/s.dart';
+import '/../core/responsive/responsive_config.dart';
+import '/../core/routing/router_generation_config.dart';
+import '/../core/theme/app_themes.dart';
+import 'controller/localization_cubit/localization_cubit.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,10 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LocalizationCubit>(
-          create: (context) => LocalizationCubit(),
-        ),
-        BlocProvider<ServiceBloc>(
-          create: (context) => ServiceBloc(repository: getIt()),
+          create: (context) => getIt<LocalizationCubit>(),
         ),
       ],
       child: BlocBuilder<LocalizationCubit, LocalizationState>(
@@ -30,11 +27,11 @@ class MyApp extends StatelessWidget {
           return GestureDetector(
             onTap: () => unfocusScope(context),
             child: MaterialApp.router(
-              title: 'SIT',
+              title: 'SIT Sales Tracker',
               debugShowCheckedModeBanner: false,
               routerConfig: RouterGenerationConfig.goRouter,
               theme: Appthemes.lightTheme(),
-              locale: localeState.locale, //const Locale('ar'),
+              locale: const Locale('ar'),
               supportedLocales: S.supportedLocales,
               localizationsDelegates: const [
                 S.delegate,
@@ -43,10 +40,10 @@ class MyApp extends StatelessWidget {
                 GlobalCupertinoLocalizations.delegate,
               ],
               builder: (context, myWidget) {
-                final widget = EasyLoading.init()(context, myWidget);
+                myWidget = EasyLoading.init()(context, myWidget);
                 configLoading(context);
 
-                return widget;
+                return myWidget;
               },
             ),
           );

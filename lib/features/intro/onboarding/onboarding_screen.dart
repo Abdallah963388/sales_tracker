@@ -6,6 +6,7 @@ import 'package:sit/core/cache_helper/cache_values.dart';
 import 'package:sit/core/localization/s.dart';
 import 'package:sit/core/responsive/responsive_config.dart';
 import 'package:sit/core/routing/app_routes.dart';
+// import '/../core/routing/app_routes.dart';
 import 'package:sit/core/shared_widgets/custom_primary_button.dart';
 import 'package:sit/core/theme/app_colors.dart';
 import 'package:sit/core/theme/app_images.dart';
@@ -14,7 +15,8 @@ import 'package:sit/features/intro/onboarding/cubit/onboarding_cubit.dart';
 import 'package:sit/features/intro/onboarding/widgets/app_journey_dot.dart';
 import 'package:sit/features/intro/onboarding/widgets/onboarding_text.dart';
 import 'package:sit/features/intro/onboarding/widgets/skip_button.dart';
-import 'package:sit/features/sales_features/my_app/controller/localization_cubit/localization_cubit.dart';
+import 'package:sit/features/my_app/controller/localization_cubit/localization_cubit.dart';
+// import '/../features/intro/onboarding/widgets/app_journey_dot.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -39,49 +41,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       builder: (context, state) {
         final onboardingCubit = context.read<OnboardingCubit>();
         return Scaffold(
-          backgroundColor: AppColors.primaryColor,
           body: SafeArea(
             bottom: false,
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  child: Container(
-                    height: SizeConfig.screenHeight / 2.3,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: CacheHelper.getLanguage() == 'en'
-                            ? Radius.circular(100.r)
-                            : Radius.zero,
-                        bottomLeft: CacheHelper.getLanguage() == 'ar'
-                            ? Radius.circular(100.r)
-                            : Radius.zero,
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 0.h,
-                  left: 0,
-                  right: 0,
-                  child: Image.asset(
-                    alignment: Alignment.topLeft,
-                    AppImages.onboardLeftBG,
-                  ),
-                ),
-                Positioned(
-                  top: 0.h,
-                  left: 0,
-                  right: 0,
-                  child: Image.asset(
-                    alignment: Alignment.topRight,
-                    AppImages.onboardRightBG,
-                  ),
-                ),
                 PageView.builder(
                   controller: _pageController,
                   itemCount: 3,
@@ -89,9 +53,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   onPageChanged: onboardingCubit.setOnBoardingIndex,
                   itemBuilder: (context, index) {
                     final images = [
-                      AppImages.onboard1,
-                      AppImages.onboard2,
-                      AppImages.onboard3,
+                      AppImages.onboarding1Image,
+                      AppImages.onboarding2Image,
+                      AppImages.onboarding3Image,
                     ];
 
                     return Stack(
@@ -99,32 +63,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         // Image
                         Positioned(
                           bottom: SizeConfig.screenHeight / 2.4,
-                          right: 0,
-                          left: 0,
+                          right: 20.w,
+                          left: 20.w,
                           child: Image.asset(
                             // height: 340.h,
                             images[index],
                             fit: BoxFit.contain,
                             width: double.infinity,
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          left: 0,
-                          child: Container(
-                            height: SizeConfig.screenHeight / 2.3,
-                            decoration: BoxDecoration(
-                              color: AppColors.scaffoldBackgroundLightColor,
-                              borderRadius: BorderRadius.only(
-                                topLeft: CacheHelper.getLanguage() == 'en'
-                                    ? Radius.circular(100.r)
-                                    : Radius.zero,
-                                topRight: CacheHelper.getLanguage() == 'ar'
-                                    ? Radius.circular(100.r)
-                                    : Radius.zero,
-                              ),
-                            ),
+                            filterQuality: FilterQuality.high,
                           ),
                         ),
                       ],
@@ -176,11 +122,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         20.verticalSpace,
-                        const OnBoardingText(),
+                        const IgnorePointer(
+                          child: OnBoardingText(),
+                        ),
                         50.verticalSpace,
                         SizedBox(
                           height: 15.h,
                           child: CustomJourneyDot(
+                            onDotClicked: (int index) {
+                              _pageController.animateToPage(
+                                index,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.easeInOut,
+                              );
+                            },
                             activeIndex: onboardingCubit.onBoardingIndex,
                             count: 3,
                           ),
@@ -188,7 +143,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         30.verticalSpace,
                         CustomPrimaryButton(
                           text: onboardingCubit.onBoardingIndex == 2
-                              ? s.exploreOurWork
+                              ? s.skip
                               : s.next,
                           onPressed: () {
                             if (onboardingCubit.onBoardingIndex == 2) {
@@ -197,7 +152,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 true,
                               );
                               context.pushReplacementNamed(
-                                AppRoutes.mainlayout,
+                                AppRoutes.loginScreen,
                               );
                             } else {
                               _pageController.nextPage(
