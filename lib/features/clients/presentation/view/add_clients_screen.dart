@@ -130,7 +130,7 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
       locationText = cubit.locationController.text;
     }
     paymentConfig = PaymentConfiguration.fromAsset(
-      'assets/apple_pay.json',
+      'apple_pay.json',
     );
 
     rootBundle
