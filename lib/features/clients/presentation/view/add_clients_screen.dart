@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
+import 'package:pay/pay.dart';
 import 'package:sit/core/localization/s.dart';
 import 'package:sit/core/responsive/responsive_config.dart';
 import 'package:sit/core/services/input_formatters.dart';
@@ -144,7 +145,9 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
         if (state.status == ClientStatus.addSuccess) {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message ?? s.clientAddedSuccessfully)),
+              SnackBar(
+                content: Text(state.message ?? s.clientAddedSuccessfully),
+              ),
             );
 
             await context.read<RepHomeCubit>().fetchRepHome();
@@ -236,8 +239,7 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                           controller: context
                               .read<ClientCubit>()
                               .emailController,
-                          validator: (v) =>
-                              v!.isEmpty ? s.enterEmail : null,
+                          validator: (v) => v!.isEmpty ? s.enterEmail : null,
                         ),
                         12.verticalSpace,
                         CustomPrimaryTextfield(
@@ -247,8 +249,7 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                           controller: context
                               .read<ClientCubit>()
                               .phoneController,
-                          validator: (v) =>
-                              v!.isEmpty ? s.enterPhone : null,
+                          validator: (v) => v!.isEmpty ? s.enterPhone : null,
                         ),
                         12.verticalSpace,
                         CustomPrimaryTextfield(
@@ -394,7 +395,7 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                     if (!_formKey.currentState!.validate()) return;
                     if (cubit.latitude == null || cubit.longitude == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text(s.pleasePickLocation)),
+                        SnackBar(content: Text(s.pleasePickLocation)),
                       );
                       return;
                     }
@@ -406,6 +407,30 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                         widget.client!.id!,
                       );
                     }
+                  },
+                ),
+                20.verticalSpace,
+                FutureBuilder<PaymentConfiguration>(
+                  future: PaymentConfiguration.fromAsset(
+                    'assets/apple_pay.json',
+                  ),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    return ApplePayButton(
+                      paymentConfiguration: snapshot.data!,
+                      paymentItems: const [
+                        PaymentItem(
+                          label: 'Total',
+                          amount: '100.00',
+                          status: PaymentItemStatus.final_price,
+                        ),
+                      ],
+                      type: ApplePayButtonType.buy,
+                      onPaymentResult: print,
+                    );
                   },
                 ),
                 40.verticalSpace,

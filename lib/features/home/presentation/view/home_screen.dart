@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sit/core/localization/s.dart';
 import 'package:sit/core/responsive/responsive_config.dart';
@@ -87,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                       _statCard(
                         title: s.numberOfClients,
                         count: stats?.totalClients ?? 0,
-                        icon: IconlyBroken.user3,
+                        icon: Icons.person,
                         onTap: () =>
                             context.read<SalesMainLayoutCubit>().gotoPage(1),
                       ),
