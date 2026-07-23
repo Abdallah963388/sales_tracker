@@ -129,10 +129,18 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
       cubit.longitude = widget.client!.longitude;
       locationText = cubit.locationController.text;
     }
+    paymentConfig = PaymentConfiguration.fromAsset(
+      'assets/apple_pay.json',
+    );
+
     rootBundle
         .loadString('assets/apple_pay.json')
-        .then(print)
-        .catchError(print);
+        .then((value) {
+          debugPrint(value);
+        })
+        .catchError((e) {
+          debugPrint(e.toString());
+        });
   }
 
   @override
