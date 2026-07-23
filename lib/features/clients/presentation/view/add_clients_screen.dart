@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart';
@@ -29,6 +30,7 @@ class AddClientsScreen extends StatefulWidget {
 class _AddClientsScreenState extends State<AddClientsScreen> {
   bool isVisible = true;
   String? locationText;
+  late Future<PaymentConfiguration> paymentConfig;
 
   Future<void> _confirmAndGetLocation() async {
     final confirm = await showDialog<bool>(
@@ -127,6 +129,10 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
       cubit.longitude = widget.client!.longitude;
       locationText = cubit.locationController.text;
     }
+    rootBundle
+        .loadString('assets/apple_pay.json')
+        .then(print)
+        .catchError(print);
   }
 
   @override
@@ -411,12 +417,21 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                 ),
                 20.verticalSpace,
                 FutureBuilder<PaymentConfiguration>(
-                  future: PaymentConfiguration.fromAsset(
-                    'assets/apple_pay.json',
-                  ),
+                  future: paymentConfig,
                   builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
+                    if (snapshot.hasError) {
+                      return Text(
+                        'Error: ${snapshot.error}',
+                        style: const TextStyle(color: Colors.red),
+                      );
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const Text('No Data');
                     }
 
                     return ApplePayButton(
