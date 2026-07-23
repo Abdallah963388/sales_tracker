@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sit/core/cache_helper/cache_helper.dart';
 import 'package:sit/core/cache_helper/cache_values.dart';
@@ -116,7 +115,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
       if (userRole == UserRole.rep) ...[
         TabItemModel(
           label: s.home,
-          icon: IconlyBroken.home,
+          icon: Icons.home,
           page: BlocProvider.value(
             value: repHomeCubit,
             child: const HomeScreen(),
@@ -124,7 +123,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.clients,
-          icon: IconlyBroken.user3,
+          icon: Icons.person,
           page: BlocProvider.value(
             value: clientCubit,
             child: const ClientsScreen(),
@@ -132,7 +131,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.visits,
-          icon: IconlyBroken.work,
+          icon: Icons.work,
           page: BlocProvider.value(
             value: visitsCubit,
             child: const VisitScreen(),
@@ -140,7 +139,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.profile,
-          icon: IconlyBroken.profile,
+          icon: Icons.person,
           page: MultiBlocProvider(
             providers: [
               BlocProvider.value(value: profileCubit),
@@ -152,7 +151,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
       ] else if (userRole == UserRole.admin) ...[
         TabItemModel(
           label: s.home,
-          icon: IconlyBroken.home,
+          icon: Icons.home,
           page: BlocProvider.value(
             value: adminHomeCubit,
             child: const AdminHomeScreen(),
@@ -160,7 +159,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.clients,
-          icon: IconlyBroken.user3,
+          icon: Icons.person,
           page: BlocProvider.value(
             value: clientCubit,
             child: const AllClientsScreen(),
@@ -168,7 +167,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.reps,
-          icon: IconlyBroken.work,
+          icon: Icons.work,
           page: BlocProvider.value(
             value: repCubit,
             child: const RepScreen(),
@@ -176,7 +175,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.visits,
-          icon: IconlyBroken.discovery,
+          icon: Icons.event,
           page: BlocProvider.value(
             value: visitsCubit,
             child: const AllVisitsScreen(),
@@ -184,7 +183,7 @@ class _SalesMainLayoutViewState extends State<SalesMainLayoutView> {
         ),
         TabItemModel(
           label: s.profile,
-          icon: IconlyBroken.profile,
+          icon: Icons.person,
           page: MultiBlocProvider(
             providers: [
               BlocProvider.value(value: profileCubit),

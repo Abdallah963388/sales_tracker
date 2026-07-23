@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sit/core/localization/s.dart';
 import 'package:sit/core/responsive/responsive_config.dart';
@@ -75,7 +74,7 @@ class AdminHomeScreen extends StatelessWidget {
                       _statCard(
                         title: s.numberOfClients,
                         count: stats?.totalClients ?? 0,
-                        icon: IconlyBroken.user3,
+                        icon: Icons.person,
                         onTap: () =>
                             context.read<SalesMainLayoutCubit>().gotoPage(1),
                       ),
@@ -308,7 +307,7 @@ class AdminHomeScreen extends StatelessWidget {
           borderRadius: BorderRadius.circular(14.r),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(.05),
+              color: Colors.black.withValues(alpha: .05),
               blurRadius: 8,
             ),
           ],
@@ -316,7 +315,7 @@ class AdminHomeScreen extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: AppColors.primaryColor.withOpacity(.1),
+              backgroundColor: AppColors.primaryColor.withValues(alpha: .1),
               child: Icon(icon, color: AppColors.primaryColor),
             ),
             10.horizontalSpace,

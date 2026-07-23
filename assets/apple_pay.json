@@ -1,0 +1,16 @@
+{
+    "provider": "apple_pay",
+    "data": {
+        "merchantIdentifier": "merchant.com.sit.sales_tracker",
+        "displayName": "My Store",
+        "merchantCapabilities": [
+            "3DS"
+        ],
+        "supportedNetworks": [
+            "visa",
+            "masterCard"
+        ],
+        "countryCode": "EG",
+        "currencyCode": "EGP"
+    }
+}
