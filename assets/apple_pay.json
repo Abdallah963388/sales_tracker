@@ -1,7 +1,7 @@
 {
     "provider": "apple_pay",
     "data": {
-        "merchantIdentifier": "merchant.com.sit.sales_tracker",
+        "merchantIdentifier": "merchant.com.sit.sales.app",
         "displayName": "My Store",
         "merchantCapabilities": [
             "3DS"

@@ -105,6 +105,16 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
       );
     }
   }
+  Future<void> _checkApplePay() async {
+    final config = await paymentConfig;
+
+    final canPay = await Pay({
+      PayProvider.apple_pay: config,
+    }).userCanPay(PayProvider.apple_pay);
+
+    debugPrint('Apple Pay Available: $canPay');
+  }
+
 
   late final ClientCubit cubit;
   @override
@@ -141,6 +151,7 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
         .catchError((e) {
           debugPrint(e.toString());
         });
+    _checkApplePay();
   }
 
   @override
@@ -427,35 +438,81 @@ class _AddClientsScreenState extends State<AddClientsScreen> {
                 FutureBuilder<PaymentConfiguration>(
                   future: paymentConfig,
                   builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text(
-                        'Error: ${snapshot.error}',
-                        style: const TextStyle(color: Colors.red),
+                    debugPrint('========== Apple Pay ==========');
+                    debugPrint('Connection: ${snapshot.connectionState}');
+                    debugPrint('Has Data: ${snapshot.hasData}');
+                    debugPrint('Has Error: ${snapshot.hasError}');
+                    debugPrint('Error: ${snapshot.error}');
+                    debugPrint('===============================');
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
                       );
                     }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
+                    if (snapshot.hasError) {
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        color: Colors.red.shade100,
+                        child: Text(
+                          'Future Error:\n${snapshot.error}',
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      );
                     }
 
                     if (!snapshot.hasData) {
-                      return const Text('No Data');
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        color: Colors.orange.shade100,
+                        child: const Text(
+                          'PaymentConfiguration is NULL',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      );
                     }
 
-                    return ApplePayButton(
-                      paymentConfiguration: snapshot.data!,
-                      paymentItems: const [
-                        PaymentItem(
-                          label: 'Total',
-                          amount: '100.00',
-                          status: PaymentItemStatus.final_price,
+                    debugPrint('PaymentConfiguration Loaded Successfully');
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          color: Colors.green.shade100,
+                          child: const Text(
+                            'Configuration Loaded ✔',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
+                        const SizedBox(height: 12),
+
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ApplePayButton(
+                            paymentConfiguration: snapshot.data!,
+                            paymentItems: const [
+                              PaymentItem(
+                                label: 'Total',
+                                amount: '0',
+                                status: PaymentItemStatus.final_price,
+                              ),
+                            ],
+                            type: ApplePayButtonType.buy,
+                            onPaymentResult: (result) {
+                              debugPrint(result.toString());
+                            },
+                          ),
+                        )
+
+
                       ],
-                      type: ApplePayButtonType.buy,
-                      onPaymentResult: print,
                     );
                   },
                 ),
+
                 40.verticalSpace,
               ],
             ),
